@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar — Racqueteers Junior Badminton Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════ */
+:root {
+  --brand:   #0a1a82;
+  --brand-m: #1630c8;
+  --brand-l: #2a44e8;
+  --ink:     #05071a;
+  --ink2:    #090d28;
+  --card:    rgba(10,26,130,.13);
+  --cardh:   rgba(10,26,130,.26);
+  --border:  rgba(80,120,255,.17);
+  --borders: rgba(80,120,255,.4);
+  --txt:     #eeeeff;
+  --txt2:    rgba(200,210,255,.62);
+  --txt3:    rgba(140,160,230,.4);
+  --navbg:   rgba(5,7,26,.86);
+  --shadow:  rgba(10,26,130,.5);
+  --gold:    #f0c060;
+}
+[data-theme="light"] {
+  --ink:     #f0f2ff;
+  --ink2:    #e4e8ff;
+  --card:    rgba(10,26,130,.07);
+  --cardh:   rgba(10,26,130,.14);
+  --border:  rgba(10,26,130,.13);
+  --borders: rgba(10,26,130,.3);
+  --txt:     #08091e;
+  --txt2:    rgba(30,40,100,.7);
+  --txt3:    rgba(30,40,100,.42);
+  --navbg:   rgba(240,242,255,.92);
+  --shadow:  rgba(10,26,130,.18);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--ink); color:var(--txt); font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; transition:background .4s,color .4s; cursor:none; }
+
+#cur  { width:10px; height:10px; border-radius:50%; background:var(--brand-l); position:fixed; z-index:9999; pointer-events:none; transform:translate(-50%,-50%); mix-blend-mode:exclusion; transition:width .14s,height .14s; }
+#curR { width:30px; height:30px; border-radius:50%; border:1.5px solid rgba(80,120,255,.55); position:fixed; z-index:9998; pointer-events:none; transform:translate(-50%,-50%); transition:left .1s,top .1s,width .2s,height .2s; }
+#prog { position:fixed; top:68px; left:0; height:2px; background:linear-gradient(90deg,var(--brand-l),rgba(150,180,255,.8)); z-index:900; width:0; transition:width .05s linear; }
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 5vw; background:var(--navbg); backdrop-filter:blur(22px); border-bottom:1px solid var(--border); transition:background .4s,border-color .4s; }
+.logo-wrap { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.logo-slot { width:38px; height:38px; border-radius:9px; overflow:hidden; background:linear-gradient(135deg,var(--brand),var(--brand-l)); display:flex; align-items:center; justify-content:center; border:1.5px solid var(--borders); flex-shrink:0; }
+.logo-slot img { width:100%; height:100%; object-fit:cover; display:none; }
+.logo-slot img.loaded { display:block; }
+.logo-fb { display:flex; }
+.logo-name { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.08rem; letter-spacing:.07em; text-transform:uppercase; color:var(--txt); line-height:1.1; }
+.logo-sub  { font-size:.58rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:rgba(100,150,255,.75); }
+
+.desk-nav { display:flex; align-items:center; gap:2.2rem; }
+.desk-nav a { font-size:.76rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:var(--txt2); position:relative; display:flex; align-items:center; gap:6px; transition:color .2s; }
+.desk-nav a::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--brand-l); border-radius:2px; transform:scaleX(0); transform-origin:right; transition:transform .28s; }
+.desk-nav a:hover, .desk-nav a.active { color:var(--txt); }
+.desk-nav a:hover::after, .desk-nav a.active::after { transform:scaleX(1); transform-origin:left; }
+
+.nav-r { display:flex; align-items:center; gap:.8rem; }
+.theme-btn { display:flex; align-items:center; gap:7px; padding:.38rem .82rem; background:var(--card); border:1px solid var(--border); border-radius:100px; cursor:none; transition:all .25s; }
+.theme-btn:hover { border-color:var(--borders); }
+.t-track { width:30px; height:17px; background:var(--border); border-radius:100px; position:relative; transition:background .3s; }
+[data-theme="light"] .t-track { background:var(--brand); }
+.t-thumb { width:11px; height:11px; background:#fff; border-radius:50%; position:absolute; top:3px; left:3px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); box-shadow:0 1px 4px rgba(0,0,0,.3); }
+[data-theme="light"] .t-thumb { transform:translateX(13px); }
+.hamb { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:none; padding:5px; }
+.hamb span { display:block; width:22px; height:2px; background:var(--txt); border-radius:2px; transition:all .28s; }
+.mob-nav { display:none; position:fixed; inset:68px 0 0; z-index:700; background:var(--navbg); backdrop-filter:blur(28px); flex-direction:column; align-items:center; justify-content:center; gap:2.4rem; }
+.mob-nav.open { display:flex; }
+.mob-nav a { font-family:'Barlow Condensed',sans-serif; font-size:3rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--txt); display:flex; align-items:center; gap:.7rem; transition:color .2s; }
+.mob-nav a:hover { color:rgba(100,150,255,.9); }
+
+/* ═══════════════════════════════════════
+   PAGE HERO
+═══════════════════════════════════════ */
+.page-hero { min-height:72vh; display:flex; flex-direction:column; justify-content:flex-end; padding:0 5vw clamp(3.5rem,7vh,7rem); padding-top:68px; position:relative; overflow:hidden; }
+.h-grid { position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:55px 55px; mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%); animation:gridD 18s linear infinite; opacity:.45; }
+@keyframes gridD { from{background-position:0 0;} to{background-position:55px 55px;} }
+.blob { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
+.b1 { width:600px; height:600px; top:-15%; left:-12%; background:rgba(10,26,130,.26); animation:bp 14s ease-in-out infinite; }
+.b2 { width:360px; height:360px; bottom:-5%; right:-8%; background:rgba(40,80,200,.12); animation:bp 19s ease-in-out infinite reverse; }
+[data-theme="light"] .b1 { background:rgba(10,26,130,.06); }
+[data-theme="light"] .b2 { background:rgba(40,80,200,.06); }
+@keyframes bp { 0%,100%{transform:scale(1) translate(0,0);} 40%{transform:scale(1.07) translate(24px,-32px);} 70%{transform:scale(.94) translate(-18px,22px);} }
+.page-eyebrow { display:inline-flex; align-items:center; gap:8px; padding:.4rem .92rem; background:var(--card); border:1px solid var(--border); border-radius:100px; font-size:.67rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:rgba(100,150,255,.9); margin-bottom:1.8rem; position:relative; z-index:2; animation:fuA .7s .1s both; }
+.pdot { width:6px; height:6px; border-radius:50%; background:rgba(100,160,255,.9); animation:pd 2.2s infinite; }
+@keyframes pd { 0%,100%{box-shadow:0 0 0 0 rgba(100,160,255,.6);} 60%{box-shadow:0 0 0 5px rgba(100,160,255,0);} }
+.page-title { font-family:'Barlow Condensed',sans-serif; font-size:clamp(3.8rem,11vw,12rem); font-weight:900; line-height:.82; letter-spacing:-.02em; text-transform:uppercase; position:relative; z-index:2; }
+.page-title .hol { -webkit-text-stroke:2px var(--txt); color:transparent; display:block; animation:fuA .8s .15s both; }
+[data-theme="light"] .page-title .hol { -webkit-text-stroke:2px var(--brand); }
+.page-title .bl { color:var(--brand-l); display:block; animation:fuA .8s .3s both; }
+.page-hero-sub { max-width:560px; font-size:.96rem; line-height:1.75; font-weight:300; color:var(--txt2); margin-top:1.8rem; position:relative; z-index:2; animation:fuA .8s .45s both; }
+@keyframes fuA { from{opacity:0;transform:translateY(26px);} to{opacity:1;transform:translateY(0);} }
+
+/* ═══════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════ */
+.mq-strip { overflow:hidden; background:var(--brand); padding:.85rem 0; position:relative; }
+.mq-strip::before,.mq-strip::after { content:''; position:absolute; top:0; bottom:0; width:60px; z-index:2; }
+.mq-strip::before { left:0; background:linear-gradient(to right,var(--brand),transparent); }
+.mq-strip::after  { right:0; background:linear-gradient(to left,var(--brand),transparent); }
+.mq-t  { display:flex; white-space:nowrap; animation:mqs 26s linear infinite; }
+.mq-i  { display:inline-flex; align-items:center; gap:1.4rem; padding:0 2rem; font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.65); }
+.mq-i strong { color:#fff; }
+.mq-d  { width:4px; height:4px; background:rgba(255,255,255,.3); border-radius:50%; display:inline-block; }
+@keyframes mqs { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+/* ═══════════════════════════════════════
+   SECTION HELPERS
+═══════════════════════════════════════ */
+.sec-lbl { display:inline-flex; align-items:center; gap:8px; font-size:.64rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:rgba(100,150,255,.85); margin-bottom:1rem; }
+.sec-lbl::before { content:''; display:inline-block; width:16px; height:2px; background:rgba(100,150,255,.85); border-radius:2px; }
+.sec-title { font-family:'Barlow Condensed',sans-serif; font-size:clamp(2.5rem,5vw,5rem); font-weight:900; line-height:.88; text-transform:uppercase; letter-spacing:-.01em; margin-bottom:2.5rem; }
+.sec-title .hol { -webkit-text-stroke:2px currentColor; color:transparent; }
+
+/* ═══════════════════════════════════════
+   MONTH FILTER BAR
+═══════════════════════════════════════ */
+.filter-section {
+  padding: clamp(3rem,5vw,5rem) 5vw 0;
+  background: var(--ink2);
+  transition: background .4s;
+}
+.filter-bar {
+  display:flex; align-items:center; gap:.6rem;
+  flex-wrap:wrap; padding-bottom:2rem;
+}
+.filter-btn {
+  padding:.42rem 1rem;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:100px; cursor:none;
+  font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--txt2); transition:all .22s;
+}
+.filter-btn:hover { border-color:rgba(80,130,255,.4); color:var(--txt); }
+.filter-btn.active { background:linear-gradient(135deg,var(--brand),var(--brand-m)); border-color:transparent; color:#fff; box-shadow:0 4px 14px var(--shadow); }
+
+/* ═══════════════════════════════════════
+   CALENDAR GRID
+═══════════════════════════════════════ */
+.calendar-section {
+  padding: 0 5vw clamp(5rem,10vw,9rem);
+  background: var(--ink2);
+  transition: background .4s;
+}
+.calendar-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* Month card */
+.month-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:20px; overflow:hidden;
+  opacity:0; transform:translateY(28px);
+  transition:opacity .65s ease, transform .65s ease, border-color .3s;
+}
+.month-card.in-view { opacity:1; transform:translateY(0); }
+.month-card:hover { border-color:rgba(80,130,255,.35); }
+
+/* Month header */
+.month-head {
+  padding:1.2rem 1.5rem .9rem;
+  border-bottom:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.month-name {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.4rem; font-weight:900; text-transform:uppercase;
+  letter-spacing:.04em; color:var(--txt);
+}
+.month-count {
+  font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--txt3);
+  background:var(--card); border:1px solid var(--border);
+  padding:.22rem .65rem; border-radius:100px;
+}
+
+/* Session grid inside card */
+.sat-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:.7rem; padding:1.2rem 1.5rem 1.5rem;
+}
+.sat-box {
+  background:var(--ink); border:1px solid var(--border);
+  border-radius:12px; padding:.85rem .9rem;
+  display:flex; flex-direction:column; gap:.18rem;
+  transition:border-color .25s, background .25s;
+  position:relative; overflow:hidden;
+}
+.sat-box::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--brand),var(--brand-l));
+  transform:scaleX(0); transition:transform .3s; transform-origin:left;
+}
+.sat-box:hover { border-color:rgba(80,130,255,.4); background:var(--cardh); }
+.sat-box:hover::before { transform:scaleX(1); }
+.sat-box strong { font-size:.88rem; font-weight:700; color:var(--txt); }
+.sat-box span   { font-size:.74rem; color:var(--brand-l); font-weight:600; font-family:'Barlow Condensed',sans-serif; letter-spacing:.05em; }
+.sat-box small  { font-size:.68rem; color:var(--txt3); font-weight:300; }
+
+/* "Today" highlight on session tile */
+.sat-box.today {
+  border-color:var(--brand-l);
+  background:linear-gradient(135deg,rgba(10,26,130,.28),rgba(26,48,200,.16));
+}
+.sat-box.today::before { transform:scaleX(1); }
+.today-pill {
+  display:inline-block; padding:.1rem .45rem;
+  background:var(--brand-l); border-radius:100px;
+  font-size:.55rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  color:#fff; margin-top:.12rem;
+}
+
+/* Past session — dimmed */
+.sat-box.past { opacity:.35; }
+
+/* Pending month card */
+.month-card--pending { opacity:.5; }
+.month-card--pending.in-view { opacity:.55; }
+.month-card--pending:hover { opacity:.75; }
+.month-note {
+  padding:2.2rem 1.5rem;
+  display:flex; align-items:center; gap:.8rem;
+  font-size:.72rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--txt3);
+}
+.month-note svg { flex-shrink:0; opacity:.5; }
+
+/* ═══════════════════════════════════════
+   VENUE LEGEND
+═══════════════════════════════════════ */
+.venue-legend {
+  padding: clamp(4rem,8vw,7rem) 5vw;
+  background: var(--ink);
+  transition: background .4s;
+}
+.venue-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem;
+  margin-top:2rem;
+}
+.venue-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:1.4rem 1.5rem;
+  opacity:0; transform:translateY(24px);
+  transition:opacity .65s ease, transform .65s ease, border-color .3s;
+}
+.venue-card.in-view { opacity:1; transform:translateY(0); }
+.venue-card:nth-child(2) { transition-delay:.1s; }
+.venue-card:nth-child(3) { transition-delay:.2s; }
+.venue-card:hover { border-color:rgba(80,130,255,.38); }
+.venue-name { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--txt); margin-bottom:.5rem; display:flex; align-items:center; gap:8px; }
+.venue-name svg { color:rgba(100,150,255,.75); flex-shrink:0; }
+.venue-detail { font-size:.8rem; color:var(--txt2); font-weight:300; line-height:1.6; }
+
+/* ═══════════════════════════════════════
+   UPDATES SECTION
+═══════════════════════════════════════ */
+.updates-section {
+  padding: clamp(4rem,8vw,7rem) 5vw clamp(5rem,10vw,9rem);
+  background: var(--ink2);
+  transition: background .4s;
+}
+.updates-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:2.5rem;
+}
+.update-card {
+  background:var(--card); border:1px solid var(--border); border-radius:20px;
+  padding:2rem;
+  opacity:0; transform:translateY(24px);
+  transition:opacity .65s ease, transform .65s ease, border-color .3s, box-shadow .3s;
+  position:relative; overflow:hidden;
+}
+.update-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--brand),var(--brand-l)); transform:scaleX(0); transition:transform .35s; transform-origin:left; }
+.update-card.in-view { opacity:1; transform:translateY(0); }
+.update-card:nth-child(2) { transition-delay:.12s; }
+.update-card:hover { border-color:rgba(80,130,255,.38); box-shadow:0 12px 32px var(--shadow); }
+.update-card:hover::before { transform:scaleX(1); }
+.update-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.3rem .85rem; border-radius:100px;
+  font-size:.62rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:1.2rem;
+}
+.badge-event  { background:rgba(240,192,96,.1); border:1px solid rgba(240,192,96,.28); color:var(--gold); }
+.badge-sched  { background:rgba(10,26,130,.2); border:1px solid var(--border); color:rgba(120,160,255,.9); }
+.update-title { font-family:'Barlow Condensed',sans-serif; font-size:1.5rem; font-weight:900; text-transform:uppercase; letter-spacing:.03em; margin-bottom:.7rem; }
+.update-body  { font-size:.86rem; color:var(--txt2); font-weight:300; line-height:1.72; }
+
+/* ═══════════════════════════════════════
+   FADE-UP GENERIC
+═══════════════════════════════════════ */
+.fade-up { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+.fade-up.in-view { opacity:1; transform:translateY(0); }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer { background:var(--ink); border-top:1px solid var(--border); padding:5rem 5vw 2.5rem; transition:background .4s; }
+.foot-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:4rem; margin-bottom:3rem; }
+.foot-brand { font-family:'Barlow Condensed',sans-serif; font-size:1.35rem; font-weight:900; text-transform:uppercase; letter-spacing:.07em; margin-bottom:.7rem; display:flex; align-items:center; gap:10px; }
+.foot-acc { color:rgba(100,160,255,.9); }
+.foot-logo-m { width:28px; height:28px; border-radius:7px; background:linear-gradient(135deg,var(--brand),var(--brand-m)); display:flex; align-items:center; justify-content:center; }
+.foot-tag  { font-size:.82rem; line-height:1.75; color:var(--txt2); margin-bottom:1.4rem; font-weight:300; }
+.foot-coc  { display:inline-flex; align-items:center; gap:7px; padding:.5rem 1rem; border:1.5px solid var(--border); border-radius:100px; font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:var(--txt2); transition:all .25s; }
+.foot-coc:hover { border-color:rgba(80,130,255,.5); color:rgba(120,170,255,.9); background:var(--card); }
+.foot-ct { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--txt3); margin-bottom:1.2rem; }
+.foot-info { display:flex; flex-direction:column; gap:.9rem; }
+.foot-row { display:flex; gap:.85rem; }
+.foot-row svg { flex-shrink:0; margin-top:2px; opacity:.7; }
+.foot-row p { font-size:.8rem; line-height:1.62; color:var(--txt2); }
+.foot-row span { display:block; color:var(--txt3); font-size:.75rem; }
+.socials { display:flex; gap:.7rem; margin-top:.4rem; }
+.soc-a { width:37px; height:37px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--border); border-radius:10px; color:var(--txt2); text-decoration:none; transition:all .25s; }
+.soc-a:hover { border-color:rgba(80,130,255,.5); color:rgba(130,180,255,.9); background:var(--card); transform:translateY(-3px); }
+.foot-bot { display:flex; justify-content:space-between; align-items:center; padding-top:2rem; border-top:1px solid var(--border); font-size:.67rem; color:var(--txt3); flex-wrap:wrap; gap:.7rem; }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:1100px) {
+  .calendar-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:960px) {
+  .desk-nav { display:none; }
+  .hamb { display:flex; }
+  .calendar-grid { grid-template-columns:1fr 1fr; }
+  .venue-grid { grid-template-columns:1fr; }
+  .updates-grid { grid-template-columns:1fr; }
+  .foot-grid { grid-template-columns:1fr; gap:2.5rem; }
+}
+@media(max-width:600px) {
+  .calendar-grid { grid-template-columns:1fr; }
+  .sat-grid { grid-template-columns:1fr; }
+  .foot-bot { flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="curR"></div>
+<div id="prog"></div>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header>
+  <a class="logo-wrap" href="index.html">
+    <div class="logo-slot">
+      <img src="logo.jpg" alt="Club logo" id="logoImg"
+           onload="this.classList.add('loaded');document.getElementById('logoFb').style.display='none';"
+           onerror="this.style.display='none';">
+      <span id="logoFb" class="logo-fb">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="9" cy="9" r="6.5" stroke="#fff" stroke-width="1.6"/>
+          <line x1="9" y1="2.5" x2="9" y2="15.5" stroke="#fff" stroke-width="1.2" opacity=".5"/>
+          <line x1="2.5" y1="9" x2="15.5" y2="9" stroke="#fff" stroke-width="1.2" opacity=".5"/>
+          <line x1="13.5" y1="13.5" x2="20.5" y2="20.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </div>
+    <div>
+      <div class="logo-name">Racqueteers</div>
+      <div class="logo-sub">Junior Badminton Club</div>
+    </div>
+  </a>
+
+  <nav class="desk-nav">
+    <a href="index.html">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Home
+    </a>
+    <a href="about.html">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      About
+    </a>
+    <a href="fee_payement.html">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+      Fees
+    </a>
+    <a href="news.html">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
+      News
+    </a>
+    <a href="calendar.html" class="active">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      Calendar
+    </a>
+  </nav>
+
+  <div class="nav-r">
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color:var(--txt3)"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+      <div class="t-track"><div class="t-thumb"></div></div>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color:var(--txt3)"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+    </button>
+    <button class="hamb" id="hamb" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mob-nav" id="mobNav">
+  <a href="index.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</a>
+  <a href="about.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>About</a>
+  <a href="fee_payement.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>Fees</a>
+  <a href="news.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>News</a>
+  <a href="calendar.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>Calendar</a>
+</nav>
+
+<!-- ══════════════ PAGE HERO ══════════════ -->
+<div class="page-hero">
+  <div class="h-grid"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="page-eyebrow"><span class="pdot"></span>Saturday Sessions 2026</div>
+  <h1 class="page-title">
+    <span class="hol">SESSION</span>
+    <span class="bl">CALENDAR.</span>
+  </h1>
+  <p class="page-hero-sub">All confirmed Saturday sessions for 2026. Times and venues vary — check each month carefully. Sessions run 09:00–13:00 unless stated otherwise.</p>
+</div>
+
+<!-- ══════════════ MARQUEE ══════════════ -->
+<div class="mq-strip" aria-hidden="true">
+  <div class="mq-t">
+    <span class="mq-i"><strong>Saturday Sessions</strong><span class="mq-d"></span></span>
+    <span class="mq-i">Meadow Park School<span class="mq-d"></span></span>
+    <span class="mq-i"><strong>AT7 Leisure Centre</strong><span class="mq-d"></span></span>
+    <span class="mq-i">Sidney Stringer Academy<span class="mq-d"></span></span>
+    <span class="mq-i"><strong>Finham Park 2 School</strong><span class="mq-d"></span></span>
+    <span class="mq-i">09:00 – 13:00<span class="mq-d"></span></span>
+    <span class="mq-i"><strong>Saturday Sessions</strong><span class="mq-d"></span></span>
+    <span class="mq-i">Meadow Park School<span class="mq-d"></span></span>
+    <span class="mq-i"><strong>AT7 Leisure Centre</strong><span class="mq-d"></span></span>
+    <span class="mq-i">Sidney Stringer Academy<span class="mq-d"></span></span>
+    <span class="mq-i"><strong>Finham Park School</strong><span class="mq-d"></span></span>
+    <span class="mq-i">09:00 – 13:00<span class="mq-d"></span></span>
+  </div>
+</div>
+
+<!-- ══════════════ FILTER BAR + CALENDAR ══════════════ -->
+<section class="filter-section">
+  <div class="fade-up">
+    <div class="sec-lbl">Saturday Sessions — 2026</div>
+    <h2 class="sec-title">ALL <span class="hol">SESSIONS</span></h2>
+  </div>
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All Months</button>
+    <button class="filter-btn" data-filter="1">Jan</button>
+    <button class="filter-btn" data-filter="2">Feb</button>
+    <button class="filter-btn" data-filter="3">Mar</button>
+    <button class="filter-btn" data-filter="4">Apr</button>
+    <button class="filter-btn" data-filter="5">May</button>
+    <button class="filter-btn" data-filter="6">Jun</button>
+    <button class="filter-btn" data-filter="7">Jul</button>
+    <button class="filter-btn" data-filter="8">Aug</button>
+    <button class="filter-btn" data-filter="9">Sep</button>
+    <button class="filter-btn" data-filter="10">Oct</button>
+    <button class="filter-btn" data-filter="11">Nov</button>
+    <button class="filter-btn" data-filter="12">Dec</button>
+  </div>
+</section>
+
+<section class="calendar-section">
+  <div class="calendar-grid" id="calendarGrid">
+
+    <!-- JANUARY -->
+    <article class="month-card" data-month="1">
+      <div class="month-head">
+        <div class="month-name">January</div>
+        <div class="month-count">4 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-01-10"><strong>10 Jan</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-01-17"><strong>17 Jan</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-01-24"><strong>24 Jan</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-01-31"><strong>31 Jan</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+      </div>
+    </article>
+
+    <!-- FEBRUARY -->
+    <article class="month-card" data-month="2">
+      <div class="month-head">
+        <div class="month-name">February</div>
+        <div class="month-count">4 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-02-07"><strong>7 Feb</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-02-14"><strong>14 Feb</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-02-21"><strong>21 Feb</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-02-28"><strong>28 Feb</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+      </div>
+    </article>
+
+    <!-- MARCH -->
+    <article class="month-card" data-month="3">
+      <div class="month-head">
+        <div class="month-name">March</div>
+        <div class="month-count">4 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-03-07"><strong>7 Mar</strong><span>12:00 – 16:00</span><small>Sidney Stringer Academy</small></div>
+        <div class="sat-box" data-date="2026-03-14"><strong>14 Mar</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-03-21"><strong>21 Mar</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-03-28"><strong>28 Mar</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+      </div>
+    </article>
+
+    <!-- APRIL -->
+    <article class="month-card" data-month="4">
+      <div class="month-head">
+        <div class="month-name">April</div>
+        <div class="month-count">4 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-04-04"><strong>4 Apr</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-04-11"><strong>11 Apr</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-04-18"><strong>18 Apr</strong><span>09:00 – 13:00</span><small>Meadow Park School</small></div>
+        <div class="sat-box" data-date="2026-04-25"><strong>25 Apr</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+      </div>
+    </article>
+
+    <!-- MAY -->
+    <article class="month-card" data-month="5">
+      <div class="month-head">
+        <div class="month-name">May</div>
+        <div class="month-count">5 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-05-02"><strong>2 May</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-05-09"><strong>9 May</strong><span>09:00 – 13:00</span><small>Finham Park 2 School</small></div>
+        <div class="sat-box" data-date="2026-05-16"><strong>16 May</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-05-23"><strong>23 May</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-05-30"><strong>30 May</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+      </div>
+    </article>
+
+    <!-- JUNE -->
+    <article class="month-card" data-month="6">
+      <div class="month-head">
+        <div class="month-name">June</div>
+        <div class="month-count">4 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-06-06"><strong>6 Jun</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-06-13"><strong>13 Jun</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-06-20"><strong>20 Jun</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-06-27"><strong>27 Jun</strong><span>09:00 – 13:00</span><small>Finham Park 2 School</small></div>
+      </div>
+    </article>
+
+    <!-- JULY -->
+    <article class="month-card" data-month="7">
+      <div class="month-head">
+        <div class="month-name">July</div>
+        <div class="month-count">4 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-07-04"><strong>4 Jul</strong><span>09:00 – 13:00</span><small>Finham Park 2 School</small></div>
+        <div class="sat-box" data-date="2026-07-11"><strong>11 Jul</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-07-18"><strong>18 Jul</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-07-25"><strong>25 Jul</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+      </div>
+    </article>
+
+    <!-- AUGUST -->
+    <article class="month-card" data-month="8">
+      <div class="month-head">
+        <div class="month-name">August</div>
+        <div class="month-count">5 sessions</div>
+      </div>
+      <div class="sat-grid">
+        <div class="sat-box" data-date="2026-08-01"><strong>1 Aug</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-08-08"><strong>8 Aug</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-08-15"><strong>15 Aug</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-08-22"><strong>22 Aug</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+        <div class="sat-box" data-date="2026-08-29"><strong>29 Aug</strong><span>09:00 – 13:00</span><small>AT7 Leisure Centre</small></div>
+      </div>
+    </article>
+
+    <!-- SEPTEMBER — pending -->
+    <article class="month-card month-card--pending" data-month="9">
+      <div class="month-head">
+        <div class="month-name">September</div>
+        <div class="month-count">TBC</div>
+      </div>
+      <div class="month-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Venue yet to be finalised
+      </div>
+    </article>
+
+    <!-- OCTOBER — pending -->
+    <article class="month-card month-card--pending" data-month="10">
+      <div class="month-head">
+        <div class="month-name">October</div>
+        <div class="month-count">TBC</div>
+      </div>
+      <div class="month-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Venue yet to be finalised
+      </div>
+    </article>
+
+    <!-- NOVEMBER — pending -->
+    <article class="month-card month-card--pending" data-month="11">
+      <div class="month-head">
+        <div class="month-name">November</div>
+        <div class="month-count">TBC</div>
+      </div>
+      <div class="month-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Venue yet to be finalised
+      </div>
+    </article>
+
+    <!-- DECEMBER — pending -->
+    <article class="month-card month-card--pending" data-month="12">
+      <div class="month-head">
+        <div class="month-name">December</div>
+        <div class="month-count">TBC</div>
+      </div>
+      <div class="month-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Venue yet to be finalised
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══════════════ VENUE LEGEND ══════════════ -->
+<section class="venue-legend">
+  <div class="fade-up">
+    <div class="sec-lbl">Venues</div>
+    <h2 class="sec-title" style="font-size:clamp(2rem,4vw,4rem);">WHERE WE PLAY</span></h2>
+  </div>
+  <div class="venue-grid">
+    <div class="venue-card">
+      <div class="venue-name">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Meadow Park School
+      </div>
+      <div class="venue-detail">Abbey Road, Coventry, CV3 4BD<br>Our primary home venue.</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-name">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        AT7 Leisure Centre
+      </div>
+      <div class="venue-detail">Coventry<br>Used frequently for the majority of sessions from April onwards.</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-name">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Sidney Stringer Academy
+      </div>
+      <div class="venue-detail">Coventry<br>Used for special sessions, e.g. the 7 Mar alternate time slot.</div>
+    </div>
+  </div>
+  <!-- Finham as a fourth -->
+  <div style="margin-top:1.2rem; max-width:400px;">
+    <div class="venue-card in-view" style="opacity:1;transform:none;">
+      <div class="venue-name">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Finham Park School
+      </div>
+      <div class="venue-detail">Coventry<br>Alternative venue used periodically from May to July.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ UPDATES ══════════════ -->
+<section class="updates-section">
+  <div class="fade-up">
+    <div class="sec-lbl">More Updates</div>
+    <h2 class="sec-title" style="font-size:clamp(2rem,4vw,4rem);">CLUB <span class="hol">NEWS</span></h2>
+  </div>
+  <div class="updates-grid">
+    <div class="update-card">
+      <div class="update-badge badge-event">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+        Event
+      </div>
+      <div class="update-title"></a>Team Challenge</div>
+      <p class="update-body">Details for this year's Team Challenge are yet to be announced. Check back here for updates on dates, venues, and teams.</p>
+    </div>
+    <div class="update-card">
+      <div class="update-badge badge-sched">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+        Schedule
+      </div>
+      <div class="update-title">Holiday Schedule</div>
+      <p class="update-body">No planned holiday breaks this season. Sessions continue every Saturday as listed above. Venues may change — always check before travelling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-brand">
+        <div class="foot-logo-m">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><circle cx="9" cy="9" r="6" stroke="white" stroke-width="1.5" fill="none"/><line x1="13.5" y1="13.5" x2="20" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        Racqueteers <span class="foot-acc">Junior Badminton</span>
+      </div>
+      <p class="foot-tag">Nurturing the next generation of badminton talent across Coventry. Everyone welcome — all abilities, ages 5 to 18.</p>
+      <a href="https://www.badmintonengland.co.uk/wp-content/uploads/2021/11/Code-of-ethics-and-conduct-2021-1.pdf" target="_blank" class="foot-coc">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        Code of Conduct
+      </a>
+    </div>
+    <div>
+      <p class="foot-ct">Find Us</p>
+      <div class="foot-info">
+        <div class="foot-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <p>Meadow Park School<span>Abbey Road, CV3 4BD</span><span>Coventry</span></p>
+        </div>
+        <div class="foot-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          <p>0123 456 789</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="foot-ct">Follow Us</p>
+      <div class="socials">
+        <a href="https://www.facebook.com/rjbadmintonclub" class="soc-a" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <span>© 2024 Young Racqueteers. All rights reserved.</span>
+    <span>Built by Karanveer Singh Dhanota @ KSD Agency</span>
+  </div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){curR.style.left=mx+'px';curR.style.top=my+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';curR.style.width='46px';curR.style.height='46px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='30px';curR.style.height='30px';});
+});
+
+/* ── THEME ── */
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';
+});
+
+/* ── HAMBURGER ── */
+document.getElementById('hamb').addEventListener('click',()=>document.getElementById('mobNav').classList.toggle('open'));
+
+/* ── SCROLL PROGRESS ── */
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{prog.style.width=((scrollY/(document.body.scrollHeight-innerHeight))*100)+'%';},{passive:true});
+
+/* ── SCROLL REVEAL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('in-view');});
+},{threshold:0.08});
+document.querySelectorAll('.month-card,.venue-card,.update-card,.fade-up').forEach(el=>obs.observe(el));
+
+/* ── HIGHLIGHT TODAY + PAST SESSIONS ── */
+const today = new Date();
+today.setHours(0,0,0,0);
+document.querySelectorAll('.sat-box[data-date]').forEach(box=>{
+  const d = new Date(box.dataset.date);
+  if(d.getTime()===today.getTime()){
+    box.classList.add('today');
+    const pill=document.createElement('span');
+    pill.className='today-pill'; pill.textContent='Today';
+    box.appendChild(pill);
+  } else if(d < today){
+    box.classList.add('past');
+  }
+});
+
+/* ── MONTH FILTER ── */
+document.getElementById('filterBar').addEventListener('click',e=>{
+  const btn=e.target.closest('.filter-btn');
+  if(!btn) return;
+  // Update active state
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const f=btn.dataset.filter;
+  document.querySelectorAll('.month-card').forEach(card=>{
+    const show = f==='all' || card.dataset.month===f;
+    card.style.display = show ? '' : 'none';
+  });
+});
+
+/* ── STAGGER month card delays ── */
+document.querySelectorAll('.month-card').forEach((card,i)=>{
+  card.style.transitionDelay = (i%3 * 0.1)+'s';
+});
+</script>
+</body>
+</html>
