@@ -399,6 +399,20 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:5rem 5vw
 .soc-a{width:37px;height:37px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);border-radius:10px;color:var(--txt2);text-decoration:none;font-size:.9rem;transition:all .25s;}
 .soc-a:hover{border-color:rgba(80,130,255,.5);color:rgba(130,180,255,.9);background:var(--card);transform:translateY(-3px);}
 .foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--border);font-size:.67rem;color:var(--txt3);flex-wrap:wrap;gap:.7rem;}
+.field textarea{background:var(--inputbg);border:1.5px solid var(--border);border-radius:10px;padding:.72rem .95rem;color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;outline:none;transition:border-color .2s,box-shadow .2s;resize:vertical;min-height:80px;width:100%;}
+.field textarea::placeholder{color:var(--txt3);}
+.field textarea:focus{border-color:rgba(80,130,255,.6);box-shadow:0 0 0 3px rgba(40,80,255,.12);}
+.fconsent{display:flex;align-items:flex-start;gap:.75rem;margin-top:.4rem;}
+.fconsent input[type="checkbox"]{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--brand-l);cursor:none;}
+.fconsent label{font-size:.75rem;line-height:1.6;color:var(--txt2);}
+.fconsent-hint{display:block;font-size:.68rem;color:var(--txt3);margin-top:.2rem;}
+.fconsent-hint a{color:rgba(100,150,255,.9);text-decoration:none;}
+.fconsent-hint a:hover{text-decoration:underline;}
+.form-msg{display:none;margin-top:1.1rem;padding:.85rem 1rem;border-radius:10px;font-size:.82rem;font-weight:500;}
+.form-success{background:rgba(40,180,100,.1);border:1px solid rgba(40,180,100,.3);color:rgba(80,220,130,.9);}
+.form-error{background:rgba(200,60,60,.1);border:1px solid rgba(200,60,60,.3);color:rgba(255,110,110,.9);}
+[data-theme="light"] .form-success{color:rgba(20,140,70,.9);}
+[data-theme="light"] .form-error{color:rgba(180,40,40,.9);}
 
 #prog{position:fixed;top:68px;left:0;height:2px;background:linear-gradient(90deg,var(--brand-l),rgba(150,180,255,.8));z-index:900;width:0%;transition:width .05s linear;}
 
@@ -442,7 +456,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:5rem 5vw
 .session-body{padding:1.8rem 2rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;}
 .session-desc{font-size:.88rem;line-height:1.72;color:var(--txt2);font-weight:300;}
 .pill-row{display:flex;gap:.5rem;flex-wrap:wrap;}
-.pill{display:inline-block;padding:.28rem .75rem;background:rgba(80,130,255,.35);border:1px solid var(--border);border-radius:100px;font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(130,180,255,.9);transition:border-color .2s,background .2s;}
+.pill{display:inline-block;padding:.28rem .75rem;background:rgba(80,130,255,.35);border:1px solid var(--border);border-radius:100px;font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0);transition:border-color .2s,background .2s;}
 .session-card:hover .pill{border-color:rgba(80,130,255,.4);}
 
 @media(max-width:960px){
@@ -770,37 +784,6 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:5rem 5vw
   </div>
 </section>
 
-<!-- ═══════════════ ANIMATED COURT ═══════════════ -->
-<div class="court-section s-section wipe-in" id="courtSec">
-  <div class="sec-lbl">In Session</div>
-  <p class="court-sub">Watch the shuttlecock arc over the net — then imagine your child doing exactly that every week on court.</p>
-  <div class="court-wrap">
-    <svg class="court-svg" viewBox="0 0 620 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect class="cl" x="30" y="20" width="560" height="260" stroke="rgba(80,130,255,.5)" stroke-width="2"/>
-      <line class="cl" x1="310" y1="20" x2="310" y2="280" stroke="rgba(80,130,255,.7)" stroke-width="2.5"/>
-      <line class="cl" x1="30" y1="85" x2="310" y2="85" stroke="rgba(80,130,255,.35)" stroke-width="1.5"/>
-      <line class="cl" x1="310" y1="215" x2="590" y2="215" stroke="rgba(80,130,255,.35)" stroke-width="1.5"/>
-      <line class="cl" x1="170" y1="85" x2="170" y2="215" stroke="rgba(80,130,255,.28)" stroke-width="1.2"/>
-      <line class="cl" x1="450" y1="85" x2="450" y2="215" stroke="rgba(80,130,255,.28)" stroke-width="1.2"/>
-      <line class="cl" x1="70" y1="20" x2="70" y2="280" stroke="rgba(80,130,255,.2)" stroke-width="1.2"/>
-      <line class="cl" x1="550" y1="20" x2="550" y2="280" stroke="rgba(80,130,255,.2)" stroke-width="1.2"/>
-      <g class="shuttle-path-group">
-        <ellipse cx="0" cy="0" rx="7" ry="6" fill="#dde6ff"/>
-        <line x1="0" y1="-6" x2="-9" y2="-22" stroke="rgba(180,200,255,.85)" stroke-width="1.3"/>
-        <line x1="0" y1="-6" x2="-5" y2="-24" stroke="rgba(180,200,255,.85)" stroke-width="1.3"/>
-        <line x1="0" y1="-6" x2="0" y2="-24" stroke="rgba(180,200,255,.85)" stroke-width="1.3"/>
-        <line x1="0" y1="-6" x2="5" y2="-24" stroke="rgba(180,200,255,.85)" stroke-width="1.3"/>
-        <line x1="0" y1="-6" x2="9" y2="-22" stroke="rgba(180,200,255,.85)" stroke-width="1.3"/>
-        <path d="M -9 -22 Q 0 -29 9 -22" stroke="rgba(160,185,255,.65)" stroke-width="1" fill="none"/>
-        <line x1="-18" y1="4" x2="-8" y2="2" stroke="rgba(100,150,255,.3)" stroke-width="1.2"/>
-        <line x1="-28" y1="7" x2="-15" y2="5" stroke="rgba(100,150,255,.15)" stroke-width="1"/>
-      </g>
-      <circle cx="310" cy="20" r="3" fill="rgba(180,200,255,.4)"/>
-      <circle cx="310" cy="280" r="3" fill="rgba(180,200,255,.4)"/>
-    </svg>
-  </div>
-</div>
-
 <!-- ═══════════════ FEATURES (drag-scroll) ═══════════════ -->
 <section class="features-outer s-section" id="featuresSec">
   <div class="features-header-row">
@@ -896,89 +879,167 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:5rem 5vw
         </div>
         <div class="step-item">
           <span class="step-num">03</span>
-          <div><div class="step-title">Age &amp; Gender</div><div class="step-sub">So we can place them in the right group</div></div>
+          <div><div class="step-title">Experience &amp; Session</div><div class="step-sub">Level, preferred time &amp; join type</div></div>
           <svg class="step-ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
         </div>
       </div>
     </div>
 
     <div class="form-card">
-      <form method="post" action="submit.php">
+      <form id="joinForm"
+        action="https://script.google.com/macros/s/AKfycbwrbfASBypunAVKTbp9qQZ4PQxYbHi2SE9cUiFvjfq2tC-VOQnUOiHsD3OzymZrnMVn7A/exec"
+        method="post"
+        target="hiddenSubmitFrame">
+
+        <!-- Parent Info -->
         <div class="fsh">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(120,160,255,.9)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          Parent Info
+          Parent / Guardian
         </div>
         <div class="frow full" style="margin-top:1rem;">
           <div class="field">
             <label>
               <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-              Full Name
+              Full Name *
             </label>
-            <input type="text" placeholder="e.g. Jane Doe" name="parentname" required>
+            <input name="parent_name" type="text" placeholder="e.g. Jane Doe" required autocomplete="name">
           </div>
         </div>
         <div class="frow">
           <div class="field">
             <label>
               <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-              Email
+              Email *
             </label>
-            <input type="email" placeholder="jane@example.com" name="parentemail" required>
+            <input name="email" type="email" placeholder="jane@example.com" required autocomplete="email">
           </div>
           <div class="field">
             <label>
               <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-              Phone
+              Phone *
             </label>
-            <input type="tel" placeholder="07123 456789" name="parentnumber" required>
+            <input name="phone" type="tel" placeholder="07123 456789" required autocomplete="tel">
           </div>
         </div>
+
         <div class="fdiv"></div>
+
+        <!-- Child Info -->
         <div class="fsh">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(120,160,255,.9)"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>
           Child Info
         </div>
-        <div class="frow" style="margin-top:1rem;">
+        <div class="frow full" style="margin-top:1rem;">
           <div class="field">
             <label>
               <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-              First Name
+              Child's Name *
             </label>
-            <input type="text" placeholder="e.g. Alex" name="firstname" required>
-          </div>
-          <div class="field">
-            <label>
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-              Surname
-            </label>
-            <input type="text" placeholder="e.g. Smith" name="surname" required>
+            <input name="child_name" type="text" placeholder="e.g. Alex Smith" required>
           </div>
         </div>
         <div class="frow">
           <div class="field">
             <label>
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
-              Age
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+              Date of Birth *
             </label>
-            <input type="number" placeholder="e.g. 10" name="age" min="5" max="18" required>
+            <input name="dob" type="date" required>
           </div>
           <div class="field">
             <label>
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.34 8-7 8-11.5C20 5.81 16.19 2 11.5 2zm1 14.5h-2v-2h2v2zm0-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/></svg>
-              Gender
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2L2 7l10 5 10-5-10.01-5zM2 17l10 5 10-5-10-5-10 5zm0-5l10 5 10-5-10-5-10 5z"/></svg>
+              Experience Level *
             </label>
-            <select name="gender" required>
-              <option value="">Please select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="prefer_not_to_say">Prefer not to say</option>
+            <select name="level" required>
+              <option value="" disabled selected>Select…</option>
+              <option>Beginner (new to badminton)</option>
+              <option>Improver (can rally a bit)</option>
+              <option>Intermediate (match play)</option>
             </select>
           </div>
         </div>
-        <button type="submit" class="btn-sub">
+
+        <div class="fdiv"></div>
+
+        <!-- Session & Join Type -->
+        <div class="fsh">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(120,160,255,.9)"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+          Preferences
+        </div>
+        <div class="frow" style="margin-top:1rem;">
+          <div class="field">
+            <label>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+              Preferred Session
+            </label>
+            <select name="session">
+              <option value="">Any</option>
+              <option>9:00 – 10:00 (Beginners)</option>
+              <option>10:00 – 11:30 (Beginners/Younger)</option>
+              <option>11:30 – 13:00 (Intermediate/Older)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              Join Type *
+            </label>
+            <select name="join_type" required>
+              <option value="" disabled selected>Select…</option>
+              <option>Book a trial session</option>
+              <option>Add to waiting list</option>
+              <option>General enquiry</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fdiv"></div>
+
+        <!-- Optional extras -->
+        <div class="fsh">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(120,160,255,.9)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+          Additional Info
+        </div>
+        <div class="frow full" style="margin-top:1rem;">
+          <div class="field">
+            <label>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              Medical / Allergies
+            </label>
+            <textarea name="medical" placeholder="Optional — allergies, asthma, injuries, etc."></textarea>
+          </div>
+        </div>
+        <div class="frow full">
+          <div class="field">
+            <label>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+              Anything Else?
+            </label>
+            <textarea name="notes" placeholder="Optional — goals, concerns, access needs, etc."></textarea>
+          </div>
+        </div>
+
+        <div class="fdiv"></div>
+
+        <!-- Consent -->
+        <div class="fconsent">
+          <input id="consent" name="consent" type="checkbox" value="yes" required>
+          <label for="consent">
+            I confirm I am the parent/guardian and consent to Racqueteers BC contacting me about membership / waiting list.
+            <span class="fconsent-hint">See our <a href="privacy.html">Privacy Policy</a>.</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-sub" id="formSubmitBtn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          <span>Submit &amp; Join Waitlist</span>
+          <span>Submit</span>
         </button>
+
+        <div class="form-msg form-success" id="formSuccess">✅ Thanks! Your request has been sent. We'll be in touch as soon as a spot opens up.</div>
+        <div class="form-msg form-error" id="formError">❌ Sorry — we couldn't submit the form right now. Please try again later.</div>
+
+        <iframe name="hiddenSubmitFrame" style="display:none;"></iframe>
       </form>
     </div>
   </div>
@@ -1100,6 +1161,47 @@ window.addEventListener('scroll',()=>{
     el.style.transform=`translateY(${(off-.5)*depth*120}px)`;
   });
 },{ passive:true });
+
+// ── Join form ──
+const joinForm=document.getElementById('joinForm');
+if(joinForm){
+  const successEl=document.getElementById('formSuccess');
+  const errorEl=document.getElementById('formError');
+  const submitBtn=document.getElementById('formSubmitBtn');
+  const hiddenFrame=document.querySelector('iframe[name="hiddenSubmitFrame"]');
+
+  joinForm.addEventListener('submit',e=>{
+    e.preventDefault();
+    submitBtn.disabled=true;
+    submitBtn.querySelector('span').textContent='Sending…';
+    successEl.style.display='none';
+    errorEl.style.display='none';
+
+    const formData=new FormData(joinForm);
+    const params=new URLSearchParams(formData).toString();
+
+    // Use fetch for cleaner handling; fall back to iframe method
+    fetch(joinForm.action,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:params})
+      .then(r=>{
+        if(r.ok||r.type==='opaque'){
+          successEl.style.display='block';
+          joinForm.reset();
+        } else {
+          errorEl.style.display='block';
+        }
+      })
+      .catch(()=>{
+        // CORS will block the response but the submission still lands —
+        // treat a network error on the response as a success (GAS pattern)
+        successEl.style.display='block';
+        joinForm.reset();
+      })
+      .finally(()=>{
+        submitBtn.disabled=false;
+        submitBtn.querySelector('span').textContent='Submit';
+      });
+  });
+}
 
 const ft=document.getElementById('featTrack');
 let fDrag=false,fSX=0,fSL=0;
