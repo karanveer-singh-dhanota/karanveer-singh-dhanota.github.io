@@ -1,30 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team Challenge — Racqueteers Junior Badminton Club</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Club Challenge — Racqueteers BC</title>
+  <meta name="description" content="Club Challenge: team-based badminton competitions for U13 and U17 players." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
 /* ═══════════════════════════════════════
    DESIGN TOKENS
 ═══════════════════════════════════════ */
 :root {
-  --brand:    #0a1a82;
-  --brand-m:  #1630c8;
-  --brand-l:  #2a44e8;
-  --ink:      #05071a;
-  --ink2:     #090d28;
-  --card:     rgba(10,26,130,.13);
-  --cardh:    rgba(10,26,130,.26);
-  --border:   rgba(80,120,255,.17);
-  --borders:  rgba(80,120,255,.4);
-  --txt:      #eeeeff;
-  --txt2:     rgba(200,210,255,.62);
-  --txt3:     rgba(140,160,230,.4);
-  --navbg:    rgba(5,7,26,.86);
-  --shadow:   rgba(10,26,130,.5);
-  --gold:     #de9c19;
+  --brand:   #0a1a82;
+  --brand-m: #1630c8;
+  --brand-l: #2a44e8;
+  --ink:     #05071a;
+  --ink2:    #090d28;
+  --card:    rgba(10,26,130,.13);
+  --cardh:   rgba(10,26,130,.26);
+  --border:  rgba(80,120,255,.17);
+  --borders: rgba(80,120,255,.4);
+  --txt:     #eeeeff;
+  --txt2:    rgba(200,210,255,.62);
+  --txt3:    rgba(140,160,230,.4);
+  --navbg:   rgba(5,7,26,.86);
+  --shadow:  rgba(10,26,130,.5);
+  --gold:    #db4437;
 }
 [data-theme="light"] {
   --ink:     #f0f2ff;
@@ -40,53 +44,43 @@
   --shadow:  rgba(10,26,130,.18);
 }
 
-/* ═══════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-body {
-  background:var(--ink); color:var(--txt);
-  font-family:'Plus Jakarta Sans',sans-serif;
-  overflow-x:hidden; transition:background .4s,color .4s; cursor:none;
-}
+body { background:var(--ink); color:var(--txt); font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; transition:background .4s,color .4s; cursor:none; }
 
 #cur  { width:10px; height:10px; border-radius:50%; background:var(--brand-l); position:fixed; z-index:9999; pointer-events:none; transform:translate(-50%,-50%); mix-blend-mode:exclusion; transition:width .14s,height .14s; }
-#curR { width:30px; height:30px; border-radius:50%; border:1.5px solid rgba(80,120,255,.55); position:fixed; z-index:9998; pointer-events:none; transform:translate(-50%,-50%); transition:left .1s,top .1s,width .2s,height .2s; }
+#curR { width:30px; height:30px; border-radius:50%; border:1.5px solid rgba(80,120,255,.55); position:fixed; z-index:9998; pointer-events:none; transform:translate(-50%,-50%); transition:width .2s,height .2s; }
 #prog { position:fixed; top:68px; left:0; height:2px; background:linear-gradient(90deg,var(--brand-l),rgba(150,180,255,.8)); z-index:900; width:0; transition:width .05s linear; }
 
 /* ═══════════════════════════════════════
    HEADER
 ═══════════════════════════════════════ */
-header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 5vw; background:var(--navbg); backdrop-filter:blur(22px); border-bottom:1px solid var(--border); transition:background .4s,border-color .4s; }
-.logo-wrap { display:flex; align-items:center; gap:12px; text-decoration:none; }
-.logo-slot { width:38px; height:38px; border-radius:9px; overflow:hidden; background:linear-gradient(135deg,var(--brand),var(--brand-l)); display:flex; align-items:center; justify-content:center; border:1.5px solid var(--borders); flex-shrink:0; }
-.logo-slot img { width:100%; height:100%; object-fit:cover; display:none; }
-.logo-slot img.loaded { display:block; }
-.logo-fb { display:flex; }
-.logo-name { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.08rem; letter-spacing:.07em; text-transform:uppercase; color:var(--txt); line-height:1.1; }
-.logo-sub  { font-size:.58rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:rgba(100,150,255,.75); }
-
-.desk-nav { display:flex; align-items:center; gap:2.2rem; }
-.desk-nav a { font-size:.76rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:var(--txt2); position:relative; display:flex; align-items:center; gap:6px; transition:color .2s; }
-.desk-nav a::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--brand-l); border-radius:2px; transform:scaleX(0); transform-origin:right; transition:transform .28s; }
-.desk-nav a:hover, .desk-nav a.active { color:var(--txt); }
-.desk-nav a:hover::after, .desk-nav a.active::after { transform:scaleX(1); transform-origin:left; }
-
-.nav-r { display:flex; align-items:center; gap:.8rem; }
-.theme-btn { display:flex; align-items:center; gap:7px; padding:.38rem .82rem; background:var(--card); border:1px solid var(--border); border-radius:100px; cursor:none; transition:all .25s; }
-.theme-btn:hover { border-color:var(--borders); }
-.t-track { width:30px; height:17px; background:var(--border); border-radius:100px; position:relative; transition:background .3s; }
-[data-theme="light"] .t-track { background:var(--brand); }
-.t-thumb { width:11px; height:11px; background:#fff; border-radius:50%; position:absolute; top:3px; left:3px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); box-shadow:0 1px 4px rgba(0,0,0,.3); }
-[data-theme="light"] .t-thumb { transform:translateX(13px); }
-
-.hamb { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:none; padding:5px; }
-.hamb span { display:block; width:22px; height:2px; background:var(--txt); border-radius:2px; transition:all .28s; }
-.mob-nav { display:none; position:fixed; inset:68px 0 0; z-index:700; background:var(--navbg); backdrop-filter:blur(28px); flex-direction:column; align-items:center; justify-content:center; gap:2.4rem; }
-.mob-nav.open { display:flex; }
-.mob-nav a { font-family:'Barlow Condensed',sans-serif; font-size:3rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--txt); display:flex; align-items:center; gap:.7rem; transition:color .2s; }
-.mob-nav a:hover { color:rgba(100,150,255,.9); }
+header{position:fixed;top:0;left:0;right:0;z-index:800;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;background:var(--navbg);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);transition:background .4s,border-color .4s;}
+.logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-slot{width:38px;height:38px;border-radius:9px;overflow:hidden;background:linear-gradient(135deg,var(--brand),var(--brand-l));display:flex;align-items:center;justify-content:center;border:1.5px solid var(--borders);flex-shrink:0;}
+.logo-slot img{width:100%;height:100%;object-fit:cover;display:none;}
+.logo-slot img.loaded{display:block;}
+.logo-fb{display:flex;}
+.logo-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.08rem;letter-spacing:.07em;text-transform:uppercase;color:var(--txt);line-height:1.1;}
+.logo-sub{font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(100,150,255,.75);}
+.desk-nav{display:flex;align-items:center;gap:2.2rem;}
+.desk-nav a{font-size:.76rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--txt2);position:relative;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.desk-nav a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--brand-l);border-radius:2px;transform:scaleX(0);transform-origin:right;transition:transform .28s;}
+.desk-nav a:hover,.desk-nav a.active{color:var(--txt);}
+.desk-nav a:hover::after,.desk-nav a.active::after{transform:scaleX(1);transform-origin:left;}
+.nav-r{display:flex;align-items:center;gap:.8rem;}
+.theme-btn{display:flex;align-items:center;gap:7px;padding:.38rem .82rem;background:var(--card);border:1px solid var(--border);border-radius:100px;cursor:none;transition:all .25s;}
+.theme-btn:hover{border-color:var(--borders);}
+.t-track{width:30px;height:17px;background:var(--border);border-radius:100px;position:relative;transition:background .3s;}
+[data-theme="light"] .t-track{background:var(--brand);}
+.t-thumb{width:11px;height:11px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 4px rgba(0,0,0,.3);}
+[data-theme="light"] .t-thumb{transform:translateX(13px);}
+.hamb{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:5px;}
+.hamb span{display:block;width:22px;height:2px;background:var(--txt);border-radius:2px;transition:all .28s;}
+.mob-nav{display:none;position:fixed;inset:68px 0 0;z-index:700;background:var(--navbg);backdrop-filter:blur(28px);flex-direction:column;align-items:center;justify-content:center;gap:2.4rem;}
+.mob-nav.open{display:flex;}
+.mob-nav a{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--txt);display:flex;align-items:center;gap:.7rem;transition:color .2s;}
+.mob-nav a:hover{color:rgba(100,150,255,.9);}
 
 /* ═══════════════════════════════════════
    PAGE HERO
@@ -115,18 +109,8 @@ header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; displ
 [data-theme="light"] .page-title .hol { -webkit-text-stroke:2px var(--brand); }
 .page-title .bl  { color:var(--brand-l); display:block; animation:fuA .8s .3s both; }
 
-/* Article meta row */
-.article-meta {
-  display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;
-  margin-top:2rem; position:relative; z-index:2;
-  animation:fuA .8s .45s both;
-}
-.meta-pill {
-  display:inline-flex; align-items:center; gap:7px;
-  padding:.42rem 1rem; border-radius:100px;
-  font-size:.68rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
-  background:var(--card); border:1px solid var(--border); color:var(--txt2);
-}
+.article-meta { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-top:2rem; position:relative; z-index:2; animation:fuA .8s .45s both; }
+.meta-pill { display:inline-flex; align-items:center; gap:7px; padding:.42rem 1rem; border-radius:100px; font-size:.68rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; background:var(--card); border:1px solid var(--border); color:var(--txt2); }
 .meta-pill svg { flex-shrink:0; opacity:.7; }
 .meta-pill.gold { border-color:rgba(240,192,96,.35); color:var(--gold); background:rgba(240,192,96,.06); }
 .meta-pill.blue { border-color:var(--borders); color:rgba(120,160,255,.9); background:rgba(10,26,130,.2); }
@@ -134,7 +118,7 @@ header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; displ
 @keyframes fuA { from{opacity:0;transform:translateY(26px);} to{opacity:1;transform:translateY(0);} }
 
 /* ═══════════════════════════════════════
-   MARQUEE
+   MARQUEE (top-level, outside year cards)
 ═══════════════════════════════════════ */
 .mq-strip { overflow:hidden; background:var(--brand); padding:.85rem 0; position:relative; }
 .mq-strip::before,.mq-strip::after { content:''; position:absolute; top:0; bottom:0; width:60px; z-index:2; }
@@ -147,86 +131,34 @@ header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; displ
 @keyframes mqs { from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
 /* ═══════════════════════════════════════
-   RESULTS BANNER — sticky counts
+   RESULTS BANNER
 ═══════════════════════════════════════ */
-.results-banner {
-  background:linear-gradient(135deg,var(--brand),var(--brand-m));
-  padding:1.4rem 5vw;
-  display:grid; grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr;
-  align-items:center; gap:0;
-  box-shadow:0 4px 30px rgba(10,26,130,.4);
-  overflow:hidden; position:relative;
-}
+.results-banner { background:linear-gradient(135deg,var(--brand),var(--brand-m)); padding:1.4rem 5vw; display:grid; grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr; align-items:center; gap:0; box-shadow:0 4px 30px rgba(10,26,130,.4); overflow:hidden; position:relative; }
 .results-banner::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,transparent 0,transparent 28px,rgba(255,255,255,.03) 28px,rgba(255,255,255,.03) 30px); }
 .res-item { text-align:center; position:relative; z-index:1; padding:.4rem 1rem; }
 .res-num  { font-family:'Barlow Condensed',sans-serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:900; color:#fff; line-height:1; }
 .res-lbl  { font-size:.6rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-top:.2rem; }
 .res-div  { width:1px; height:44px; background:rgba(255,255,255,.15); }
-/* Gold medal highlight */
-.res-item.gold .res-num { color:var(--gold); }
+.res-item.gold   .res-num { color:var(--gold); }
 .res-item.silver .res-num { color:rgba(200,215,240,.9); }
 
 /* ═══════════════════════════════════════
    ARTICLE LAYOUT
-   Two-column: body + sidebar
 ═══════════════════════════════════════ */
-.article-wrap {
-  display:grid;
-  grid-template-columns:1fr 340px;
-  gap:5vw;
-  padding:clamp(4rem,8vw,8rem) 5vw;
-  align-items:start;
-}
-
-/* ── Article body ── */
+.article-wrap { display:grid; grid-template-columns:1fr 340px; gap:5vw; padding:clamp(4rem,8vw,8rem) 5vw; align-items:start; }
 .article-body { min-width:0; }
-
-/* Intro lead paragraph */
-.article-lead {
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:clamp(1.6rem,3.5vw,3rem);
-  font-weight:700; line-height:1.12;
-  color:var(--txt); margin-bottom:2.5rem;
-  opacity:0; transform:translateY(24px);
-  transition:opacity .75s ease,transform .75s ease;
-}
+.article-lead { font-family:'Barlow Condensed',sans-serif; font-size:clamp(1.6rem,3.5vw,3rem); font-weight:700; line-height:1.12; color:var(--txt); margin-bottom:2.5rem; opacity:0; transform:translateY(24px); transition:opacity .75s ease,transform .75s ease; }
 .article-lead.in-view { opacity:1; transform:translateY(0); }
-
-/* Body paragraphs */
-.article-p {
-  font-size:.96rem; line-height:1.85; font-weight:300;
-  color:var(--txt2); margin-bottom:1.4rem;
-  opacity:0; transform:translateY(18px);
-  transition:opacity .65s ease,transform .65s ease;
-}
+.article-p { font-size:.96rem; line-height:1.85; font-weight:300; color:var(--txt2); margin-bottom:1.4rem; opacity:0; transform:translateY(18px); transition:opacity .65s ease,transform .65s ease; }
 .article-p.in-view { opacity:1; transform:translateY(0); }
 .article-p strong { color:var(--txt); font-weight:600; }
-
-/* Pull-quote block */
-.pull-quote {
-  border-left:3px solid var(--brand-l);
-  padding:1.4rem 1.8rem;
-  margin:2.5rem 0;
-  background:var(--card);
-  border-radius:0 12px 12px 0;
-  opacity:0; transform:translateX(-16px);
-  transition:opacity .7s ease,transform .7s ease;
-}
+.pull-quote { border-left:3px solid var(--brand-l); padding:1.4rem 1.8rem; margin:2.5rem 0; background:var(--card); border-radius:0 12px 12px 0; opacity:0; transform:translateX(-16px); transition:opacity .7s ease,transform .7s ease; }
 .pull-quote.in-view { opacity:1; transform:translateX(0); }
 .pull-quote p { font-family:'Barlow Condensed',sans-serif; font-size:clamp(1.3rem,2.8vw,2rem); font-weight:700; line-height:1.2; color:var(--txt); }
 .pull-quote cite { display:block; margin-top:.6rem; font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:rgba(100,150,255,.8); font-style:normal; }
-
-/* Section divider */
 .a-divider { width:100%; height:1px; background:var(--border); margin:2.5rem 0; }
-
-/* Score cards inline */
 .score-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:2rem 0; }
-.score-card {
-  background:var(--card); border:1px solid var(--border); border-radius:16px;
-  padding:1.5rem; display:flex; flex-direction:column; gap:.5rem;
-  opacity:0; transform:translateY(20px);
-  transition:opacity .65s ease,transform .65s ease,border-color .3s;
-}
+.score-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1.5rem; display:flex; flex-direction:column; gap:.5rem; opacity:0; transform:translateY(20px); transition:opacity .65s ease,transform .65s ease,border-color .3s; }
 .score-card.in-view { opacity:1; transform:translateY(0); }
 .score-card:hover { border-color:rgba(80,130,255,.4); }
 .score-card:nth-child(2) { transition-delay:.12s; }
@@ -234,37 +166,25 @@ header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; displ
 .score-card-team  { font-family:'Barlow Condensed',sans-serif; font-size:1.4rem; font-weight:900; text-transform:uppercase; color:var(--txt); }
 .score-card-badge { display:inline-flex; align-items:center; gap:6px; padding:.3rem .8rem; border-radius:100px; font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; width:fit-content; }
 .badge-gold   { background:rgba(240,192,96,.15); border:1px solid rgba(240,192,96,.35); color:var(--gold); }
-.badge-silver { background:rgba(180,200,230,.1); border:1px solid rgba(180,200,230,.25); color:rgba(110, 116, 125, 0.9); }
+.badge-silver { background:rgba(180,200,230,.1); border:1px solid rgba(180,200,230,.25); color:rgba(110,116,125,.9); }
 .score-card-scores { font-size:.85rem; color:var(--txt2); font-weight:300; }
 .score-card-scores span { color:var(--brand-l); font-weight:600; }
 
-/* ── Sidebar ── */
+/* Sidebar */
 .article-sidebar { position:sticky; top:88px; display:flex; flex-direction:column; gap:1.2rem; }
-
-.sidebar-card {
-  background:var(--card); border:1px solid var(--border); border-radius:16px;
-  padding:1.5rem;
-  opacity:0; transform:translateY(24px);
-  transition:opacity .7s ease,transform .7s ease;
-}
+.sidebar-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1.5rem; opacity:0; transform:translateY(24px); transition:opacity .7s ease,transform .7s ease; }
 .sidebar-card.in-view { opacity:1; transform:translateY(0); }
 .sidebar-card:nth-child(2) { transition-delay:.1s; }
 .sidebar-card:nth-child(3) { transition-delay:.2s; }
 .sidebar-card-title { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; margin-bottom:1rem; display:flex; align-items:center; gap:8px; }
 .sidebar-card-title svg { color:rgba(100,150,255,.8); flex-shrink:0; }
-
-/* Sidebar result list */
 .result-list { display:flex; flex-direction:column; gap:.7rem; }
 .result-row  { display:flex; justify-content:space-between; align-items:center; padding:.6rem .8rem; background:rgba(10,26,130,.1); border-radius:8px; border:1px solid var(--border); }
 .result-vs   { font-size:.78rem; font-weight:500; color:var(--txt2); }
 .result-score{ font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:800; color:var(--brand-l); }
-
-/* Sidebar participants */
 .participant-list { display:flex; flex-direction:column; gap:.5rem; }
 .participant-row  { display:flex; align-items:center; gap:.7rem; font-size:.82rem; color:var(--txt2); font-weight:300; }
 .participant-dot  { width:6px; height:6px; border-radius:50%; background:var(--brand-l); flex-shrink:0; opacity:.7; }
-
-/* Quick facts list */
 .fact-list { display:flex; flex-direction:column; gap:.65rem; }
 .fact-row  { display:flex; gap:.8rem; align-items:flex-start; font-size:.82rem; color:var(--txt2); font-weight:300; line-height:1.5; }
 .fact-row svg { flex-shrink:0; margin-top:2px; opacity:.65; }
@@ -272,17 +192,8 @@ header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; displ
 /* ═══════════════════════════════════════
    PHOTO SECTION
 ═══════════════════════════════════════ */
-.photos-section {
-  padding:0 5vw clamp(4rem,8vw,8rem);
-  display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;
-}
-.photo-card {
-  border-radius:20px; overflow:hidden; border:1px solid var(--border);
-  background:var(--card); position:relative;
-  aspect-ratio:4/3;
-  opacity:0; transform:translateY(30px);
-  transition:opacity .7s ease,transform .7s ease,border-color .3s;
-}
+.photos-section { padding:0 5vw clamp(4rem,8vw,8rem); display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+.photo-card { border-radius:20px; overflow:hidden; border:1px solid var(--border); background:var(--card); position:relative; aspect-ratio:4/3; opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease,border-color .3s; }
 .photo-card.in-view { opacity:1; transform:translateY(0); }
 .photo-card:nth-child(2) { transition-delay:.15s; }
 .photo-card:hover { border-color:rgba(80,130,255,.4); }
@@ -290,9 +201,8 @@ header { position:fixed; top:0; left:0; right:0; z-index:800; height:68px; displ
 .photo-card:hover img { transform:scale(1.04); }
 .photo-card-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(5,7,26,.8) 0%,transparent 55%); display:flex; align-items:flex-end; padding:1.6rem; }
 .photo-card-cap { display:flex; flex-direction:column; gap:.3rem; }
-.photo-cap-lbl  { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255); display:flex; align-items:center; gap:5px; }
+.photo-cap-lbl  { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,1); display:flex; align-items:center; gap:5px; }
 .photo-cap-title { font-family:'Barlow Condensed',sans-serif; font-size:1.5rem; font-weight:800; text-transform:uppercase; color:#fff; line-height:1.1; }
-/* placeholder */
 .photo-ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.8rem; }
 .photo-ph svg { opacity:.18; }
 .photo-ph p { font-size:.65rem; letter-spacing:.16em; text-transform:uppercase; color:var(--txt3); }
@@ -322,18 +232,107 @@ footer { background:var(--ink); border-top:1px solid var(--border); padding:5rem
 /* ═══════════════════════════════════════
    BACK LINK
 ═══════════════════════════════════════ */
-.back-link {
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:.75rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--txt2); text-decoration:none;
-  padding:.5rem 1rem; border:1px solid var(--border); border-radius:100px;
-  background:var(--card); cursor:none; transition:all .25s;
-  margin:0 5vw; display:flex; width:fit-content;
-  margin-top:calc(68px + 2rem);
-  position:relative; z-index:2;
-  opacity:0; animation:fuA .6s .6s both;
-}
+.back-link { display:inline-flex; align-items:center; gap:8px; font-size:.75rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--txt2); text-decoration:none; padding:.5rem 1rem; border:1px solid var(--border); border-radius:100px; background:var(--card); cursor:none; transition:all .25s; margin:0 5vw; display:flex; width:fit-content; margin-top:calc(68px + 2rem); position:relative; z-index:2; opacity:0; animation:fuA .6s .6s both; }
 .back-link:hover { border-color:rgba(80,130,255,.45); color:rgba(130,180,255,.9); transform:translateX(-3px); }
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+.hero {
+  min-height:100vh; display:flex; flex-direction:column;
+  justify-content:center;
+  padding:0 5vw; padding-top:68px;
+  position:relative; overflow:hidden;
+}
+.h-grid {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:55px 55px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);
+  animation:gridD 18s linear infinite; opacity:.45;
+}
+@keyframes gridD { from{background-position:0 0;} to{background-position:55px 55px;} }
+.blob { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
+.b1 { width:650px; height:650px; top:-18%; left:-15%; background:rgba(10,26,130,.3); animation:bp 14s ease-in-out infinite; }
+.b2 { width:380px; height:380px; bottom:-10%; right:-8%; background:rgba(40,80,200,.14); animation:bp 19s ease-in-out infinite reverse; }
+.b3 { width:260px; height:260px; top:45%; left:44%; background:rgba(10,26,130,.1); animation:bp 11s ease-in-out infinite 2s; }
+[data-theme="light"] .b1 { background:rgba(10,26,130,.07); }
+[data-theme="light"] .b2 { background:rgba(40,80,200,.08); }
+[data-theme="light"] .b3 { background:rgba(10,26,130,.05); }
+@keyframes bp { 0%,100%{transform:scale(1) translate(0,0);} 40%{transform:scale(1.07) translate(24px,-32px);} 70%{transform:scale(.94) translate(-18px,22px);} }
+
+.hero-content { position:relative; z-index:2; max-width:800px; }
+.eyebrow { display:inline-flex; align-items:center; gap:8px; padding:.4rem .92rem; background:var(--card); border:1px solid var(--border); border-radius:100px; font-size:.67rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:rgba(100,150,255,.9); margin-bottom:1.7rem; animation:fuA .7s .1s both; }
+.pdot { width:6px; height:6px; border-radius:50%; background:rgba(100,160,255,.9); animation:pd 2.2s infinite; }
+@keyframes pd { 0%,100%{box-shadow:0 0 0 0 rgba(100,160,255,.6);} 60%{box-shadow:0 0 0 5px rgba(100,160,255,0);} }
+h1.ht { font-family:'Barlow Condensed',sans-serif; font-size:clamp(3.5rem,9.5vw,9.5rem); font-weight:900; line-height:.84; letter-spacing:-.015em; text-transform:uppercase; margin-bottom:2rem; animation:fuA .8s .25s both; }
+.ht .hol { -webkit-text-stroke:2px var(--txt); color:transparent; display:block; }
+[data-theme="light"] .ht .hol { -webkit-text-stroke:2px var(--brand); }
+.ht .bl { color:var(--brand-l); display:block; }
+.ht .wh { display:block; }
+.hdesc { font-size:.95rem; line-height:1.78; font-weight:300; color:var(--txt2); max-width:480px; margin-bottom:2rem; animation:fuA .8s .4s both; }
+.hdesc strong { color:var(--txt); font-weight:600; }
+.hcta { display:flex; gap:1rem; flex-wrap:wrap; animation:fuA .8s .5s both; }
+.bp { display:inline-flex; align-items:center; gap:9px; padding:.84rem 1.9rem; background:linear-gradient(135deg,var(--brand),var(--brand-m)); color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; border:none; border-radius:12px; cursor:none; transition:all .26s; box-shadow:0 7px 26px var(--shadow); position:relative; overflow:hidden; }
+.bp::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,var(--brand-l),rgba(130,160,255,.7)); opacity:0; transition:opacity .3s; }
+.bp:hover::before { opacity:1; } .bp:hover { transform:translateY(-2px); box-shadow:0 13px 38px var(--shadow); }
+.bp span,.bp svg,.bp i { position:relative; z-index:1; }
+.bs { display:inline-flex; align-items:center; gap:9px; padding:.84rem 1.9rem; background:transparent; border:1.5px solid var(--borders); color:var(--txt); font-family:'Plus Jakarta Sans',sans-serif; font-size:.8rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; border-radius:12px; cursor:none; transition:all .26s; }
+.bs:hover { background:var(--card); border-color:rgba(100,140,255,.65); color:rgba(150,190,255,.9); transform:translateY(-2px); }
+
+.hero-clubs { display:flex; flex-wrap:wrap; gap:.65rem; animation:fuA .8s .6s both; margin-bottom:2.5rem; }
+.club-pill { display:inline-flex; align-items:center; gap:8px; padding:.42rem 1rem; background:var(--card); border:1px solid var(--border); border-radius:100px; font-size:.75rem; color:var(--txt2); font-weight:500; }
+.club-pill-dot { width:7px; height:7px; border-radius:50%; background:var(--brand-l); opacity:.75; flex-shrink:0; }
+
+.scrl-cue { position:absolute; bottom:3.5vh; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:7px; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--txt3); animation:fuA 1s .9s both; }
+.scl { width:1px; height:48px; background:linear-gradient(to bottom,rgba(100,150,255,.7),transparent); animation:scA 2.2s ease-in-out infinite; }
+@keyframes scA { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+@keyframes fuA { from{opacity:0;transform:translateY(26px);} to{opacity:1;transform:translateY(0);} }
+
+/* ═══════════════════════════════════════
+   YEAR CARDS & PAGE LAYOUT
+═══════════════════════════════════════ */
+.container { padding: 0 5vw; }
+
+.club-radio-group { display:flex; flex-wrap:wrap; gap:.7rem; }
+.club-radio { display:inline-flex; align-items:center; gap:8px; padding:.42rem 1rem; background:var(--card); border:1px solid var(--border); border-radius:100px; font-size:.75rem; color:var(--txt2); font-weight:500; }
+.radio-dot { width:7px; height:7px; border-radius:50%; background:var(--brand-l); opacity:.75; }
+
+.section-title { display:flex; align-items:flex-start; justify-content:space-between; margin:3.5rem 0 1.4rem; }
+.section-title h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:900; text-transform:uppercase; color:var(--txt); }
+.section-title p { font-size:.78rem; color:var(--txt2); margin-top:.3rem; }
+
+.year-grid { display:flex; flex-direction:column; gap:.7rem; margin-bottom:4rem; }
+
+.year-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:border-color .25s; }
+.year-card:hover, .year-card[open] { border-color:var(--borders); }
+
+.year-summary { list-style:none; display:flex; align-items:center; gap:1rem; padding:1.1rem 1.4rem; cursor:pointer; user-select:none; }
+.year-summary::-webkit-details-marker { display:none; }
+.year-title { font-family:'Barlow Condensed',sans-serif; font-size:1.55rem; font-weight:900; text-transform:uppercase; color:var(--txt); min-width:4rem; }
+.year-badge { margin-left:auto; font-size:.62rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; padding:.3rem .75rem; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--txt3); }
+.year-card[open] .year-badge { border-color:var(--brand-l); color:var(--brand-l); }
+
+.btn { display:inline-flex; align-items:center; gap:6px; padding:.38rem .85rem; border-radius:100px; font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border:1px solid var(--border); background:var(--card); color:var(--txt2); transition:all .22s; cursor:pointer; }
+.btn:hover { border-color:var(--borders); color:var(--txt); }
+.btn-photo .dot { width:6px; height:6px; border-radius:50%; background:rgba(100,160,255,.8); }
+.btn-results { gap:5px; }
+.pdf-ico { flex-shrink:0; }
+
+.year-body { padding:0 1.4rem 1.4rem; border-top:1px solid var(--border); }
+
+.year-row { margin: 1rem 0; }
+.year-row-head, .year-row-body { display:flex; justify-content:space-between; }
+.label { font-size:.6rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--txt3); padding:.3rem 0; }
+.label-right, .value-right { text-align:right; }
+.value { font-size:.82rem; color:var(--txt2); padding:.2rem 0; font-weight:300; }
+
+.year-results-grid { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin-top:.8rem; }
+.year-result-card { background:rgba(10,26,130,.08); border:1px solid var(--border); border-radius:12px; padding:1.1rem; }
+.result-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:.7rem; }
+.result-head h4 { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:800; text-transform:uppercase; color:var(--txt); }
+.year-result-card p { font-size:.8rem; color:var(--txt2); line-height:1.6; font-weight:300; }
+.year-result-card p strong { color:var(--txt); font-weight:600; }
 
 /* ═══════════════════════════════════════
    RESPONSIVE
@@ -347,21 +346,266 @@ footer { background:var(--ink); border-top:1px solid var(--border); padding:5rem
   .foot-grid { grid-template-columns:1fr; gap:2.5rem; }
   .results-banner { grid-template-columns:1fr 1fr; }
   .res-div { display:none; }
+  .year-results-grid { grid-template-columns:1fr; }
 }
 @media(max-width:540px) {
   .score-grid { grid-template-columns:1fr; }
   .foot-bot { flex-direction:column; text-align:center; }
   .results-banner { grid-template-columns:1fr 1fr; }
+  .club-radio-group { flex-direction:column; }
 }
-</style>
+
+/* ═══════════════════════════════════════════════════════════
+   NEWS CARD COMPONENTS — scoped with .nc- prefix so they
+   never collide with the base styles above
+═══════════════════════════════════════════════════════════ */
+
+  /* Design tokens (mirrors the news page, auto-adapts to any
+     light/dark class already on <html> or <body>) */
+  .nc-wrap {
+    --nc-brand:   #0a1a82;
+    --nc-brand-m: #1630c8;
+    --nc-brand-l: #2a44e8;
+    --nc-gold:    #de9c19;
+    --nc-card:    rgba(10,26,130,.07);
+    --nc-cardh:   rgba(10,26,130,.14);
+    --nc-border:  rgba(10,26,130,.13);
+    --nc-borders: rgba(10,26,130,.3);
+    --nc-txt:     #08091e;
+    --nc-txt2:    rgba(30,40,100,.7);
+    --nc-txt3:    rgba(30,40,100,.42);
+    --nc-bg:      #f0f2ff;
+
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--nc-border);
+    overflow: hidden;
+    border-radius: 0 0 16px 16px;
+  }
+
+  /* ── Eyebrow pill ── */
+  .nc-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: .38rem .9rem;
+    background: var(--nc-card); border: 1px solid var(--nc-border);
+    border-radius: 100px;
+    font-size: .65rem; font-weight: 700; letter-spacing: .22em;
+    text-transform: uppercase; color: rgba(40,80,220,.85);
+    margin: 1.4rem 0 .8rem;
+  }
+  .nc-eyebrow .nc-pdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(80,130,255,.9);
+    animation: ncPd 2.2s infinite;
+  }
+  @keyframes ncPd {
+    0%,100%{ box-shadow:0 0 0 0 rgba(80,130,255,.6); }
+    60%     { box-shadow:0 0 0 5px rgba(80,130,255,0); }
+  }
+
+  /* ── Meta pills row ── */
+  .nc-meta { display:flex; align-items:center; gap:.9rem; flex-wrap:wrap; margin-bottom:1.4rem; }
+  .nc-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: .38rem .9rem; border-radius: 100px;
+    font-size: .66rem; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase;
+    background: var(--nc-card); border: 1px solid var(--nc-border);
+    color: var(--nc-txt2);
+  }
+  .nc-pill.gold   { border-color:rgba(222,156,25,.35); color:var(--nc-gold); background:rgba(222,156,25,.06); }
+  .nc-pill.blue   { border-color:var(--nc-borders); color:rgba(40,90,240,.9); background:rgba(10,26,130,.1); }
+  .nc-pill svg { flex-shrink:0; opacity:.75; }
+
+  /* ── Marquee strip ── */
+  .nc-mq {
+    overflow: hidden;
+    background: var(--nc-brand);
+    padding: .75rem 0;
+    position: relative;
+    margin: 1rem 0;
+    border-radius: 10px;
+  }
+  .nc-mq::before,.nc-mq::after {
+    content:''; position:absolute; top:0; bottom:0; width:40px; z-index:2;
+  }
+  .nc-mq::before { left:0;  background:linear-gradient(to right, var(--nc-brand),transparent); }
+  .nc-mq::after  { right:0; background:linear-gradient(to left,  var(--nc-brand),transparent); }
+  .nc-mq-t { display:flex; white-space:nowrap; animation:ncMq 22s linear infinite; }
+  .nc-mq-i {
+    display: inline-flex; align-items: center; gap: 1.2rem; padding: 0 1.6rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .95rem; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: rgba(255,255,255,.65);
+  }
+  .nc-mq-i strong { color:#fff; }
+  .nc-mq-d { width:4px;height:4px;background:rgba(255,255,255,.3);border-radius:50%;display:inline-block; }
+  @keyframes ncMq { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ── Results banner ── */
+  .nc-banner {
+    background: linear-gradient(135deg, var(--nc-brand), var(--nc-brand-m));
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+    align-items: center;
+    gap: 0;
+    margin: 1.2rem 0;
+    position: relative; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(10,26,130,.25);
+  }
+  .nc-banner::before {
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(-55deg,transparent 0,transparent 22px,rgba(255,255,255,.03) 22px,rgba(255,255,255,.03) 24px);
+  }
+  .nc-res-item { text-align:center; position:relative; z-index:1; padding:.3rem .6rem; }
+  .nc-res-num  { font-family:'Barlow Condensed',sans-serif; font-size:clamp(1.4rem,2.8vw,2.2rem); font-weight:900; color:#fff; line-height:1; }
+  .nc-res-lbl  { font-size:.57rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-top:.18rem; }
+  .nc-res-div  { width:1px; height:36px; background:rgba(255,255,255,.15); }
+  .nc-res-item.gold   .nc-res-num { color:var(--nc-gold); }
+  .nc-res-item.silver .nc-res-num { color:rgba(200,215,240,.9); }
+
+  /* ── Article layout ── */
+  .nc-article {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2.5rem;
+    margin: 1.6rem 0;
+    align-items: start;
+  }
+  .nc-body { min-width:0; }
+
+  /* Lead */
+  .nc-lead {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    font-weight: 700; line-height: 1.14;
+    color: var(--nc-txt);
+    margin-bottom: 1.4rem;
+  }
+
+  /* Paragraphs */
+  .nc-p {
+    font-size: .9rem; line-height: 1.82; font-weight: 300;
+    color: var(--nc-txt2); margin-bottom: 1.1rem;
+  }
+  .nc-p strong { color:var(--nc-txt); font-weight:600; }
+
+  /* Pull quote */
+  .nc-quote {
+    border-left: 3px solid var(--nc-brand-l);
+    padding: 1.1rem 1.5rem;
+    margin: 1.8rem 0;
+    background: var(--nc-card);
+    border-radius: 0 10px 10px 0;
+  }
+  .nc-quote p {
+    font-family:'Barlow Condensed',sans-serif;
+    font-size: clamp(1.1rem,2.2vw,1.55rem);
+    font-weight:700; line-height:1.22; color:var(--nc-txt);
+  }
+  .nc-quote cite {
+    display:block; margin-top:.5rem;
+    font-size:.68rem; font-weight:600; letter-spacing:.14em;
+    text-transform:uppercase; color:rgba(40,90,240,.8); font-style:normal;
+  }
+
+  /* Divider */
+  .nc-divider { width:100%; height:1px; background:var(--nc-border); margin:1.8rem 0; }
+
+  /* Score grid */
+  .nc-score-grid { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin:1.4rem 0; }
+  .nc-score-card {
+    background:var(--nc-card); border:1px solid var(--nc-border);
+    border-radius:14px; padding:1.2rem;
+    display:flex; flex-direction:column; gap:.45rem;
+    transition:border-color .25s;
+  }
+  .nc-score-card:hover { border-color:rgba(40,90,240,.3); }
+  .nc-sc-label  { font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--nc-txt3); }
+  .nc-sc-team   { font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:900;text-transform:uppercase;color:var(--nc-txt); }
+  .nc-sc-badge  { display:inline-flex;align-items:center;gap:5px;padding:.25rem .7rem;border-radius:100px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;width:fit-content; }
+  .nc-badge-gold   { background:rgba(222,156,25,.12);border:1px solid rgba(222,156,25,.3);color:var(--nc-gold); }
+  .nc-badge-silver { background:rgba(180,200,230,.08);border:1px solid rgba(180,200,230,.22);color:rgba(100,110,130,.85); }
+  .nc-sc-scores { font-size:.82rem;color:var(--nc-txt2);font-weight:300; }
+  .nc-sc-scores span { color:var(--nc-brand-l);font-weight:600; }
+
+  /* ── Sidebar ── */
+  .nc-sidebar { display:flex;flex-direction:column;gap:1rem;position:sticky;top:88px; }
+  .nc-scard {
+    background:var(--nc-card); border:1px solid var(--nc-border);
+    border-radius:14px; padding:1.3rem;
+  }
+  .nc-scard-title {
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+    margin-bottom:.85rem; display:flex;align-items:center;gap:7px; color:var(--nc-txt);
+  }
+  .nc-scard-title svg { color:rgba(40,90,240,.75);flex-shrink:0; }
+
+  /* Result list */
+  .nc-rlist { display:flex;flex-direction:column;gap:.55rem; }
+  .nc-rrow  { display:flex;justify-content:space-between;align-items:center;padding:.5rem .7rem;background:rgba(10,26,130,.06);border-radius:7px;border:1px solid var(--nc-border); }
+  .nc-rvs   { font-size:.76rem;font-weight:500;color:var(--nc-txt2); }
+  .nc-rscore{ font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:800;color:var(--nc-brand-l); }
+
+  /* Participants */
+  .nc-plist { display:flex;flex-direction:column;gap:.45rem; }
+  .nc-prow  { display:flex;align-items:center;gap:.65rem;font-size:.8rem;color:var(--nc-txt2);font-weight:300; }
+  .nc-pdot2 { width:6px;height:6px;border-radius:50%;background:var(--nc-brand-l);flex-shrink:0;opacity:.7; }
+
+  /* Fact list */
+  .nc-flist { display:flex;flex-direction:column;gap:.58rem; }
+  .nc-frow  { display:flex;gap:.75rem;align-items:flex-start;font-size:.8rem;color:var(--nc-txt2);font-weight:300;line-height:1.5; }
+  .nc-frow svg { flex-shrink:0;margin-top:2px;opacity:.6; }
+
+  /* ── Photo cards ── */
+  .nc-photos { display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1.4rem 0; }
+  .nc-photo {
+    border-radius:16px;overflow:hidden;border:1px solid var(--nc-border);
+    background:var(--nc-card);position:relative;aspect-ratio:4/3;
+    transition:border-color .3s;
+  }
+  .nc-photo:hover { border-color:rgba(40,90,240,.35); }
+  .nc-photo img { width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s ease; }
+  .nc-photo:hover img { transform:scale(1.04); }
+  .nc-photo-ov {
+    position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(5,7,26,.78) 0%,transparent 55%);
+    display:flex;align-items:flex-end;padding:1.3rem;
+  }
+  .nc-photo-cap { display:flex;flex-direction:column;gap:.25rem; }
+  .nc-cap-lbl   { font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:4px; }
+  .nc-cap-title { font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;font-weight:800;text-transform:uppercase;color:#fff;line-height:1.1; }
+  .nc-photo-ph  { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem; }
+  .nc-photo-ph svg { opacity:.14; }
+  .nc-photo-ph p { font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--nc-txt3); }
+
+  /* ── "No article yet" placeholder ── */
+  .nc-placeholder {
+    text-align:center;padding:2.5rem 1rem;color:var(--nc-txt3);
+    font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+  }
+
+  /* ── Responsive ── */
+  @media(max-width:900px){
+    .nc-article { grid-template-columns:1fr; }
+    .nc-sidebar  { position:static; }
+    .nc-banner   { grid-template-columns:1fr 1fr; }
+    .nc-res-div  { display:none; }
+  }
+  @media(max-width:540px){
+    .nc-score-grid { grid-template-columns:1fr; }
+    .nc-photos     { grid-template-columns:1fr; }
+  }
+  </style>
 </head>
+
 <body>
-
-<div id="cur"></div>
-<div id="curR"></div>
-<div id="prog"></div>
-
-<!-- ══════════════ HEADER ══════════════ -->
+  <div id="cur"></div>
+  <div id="curR"></div>
+  <!-- ══════════════ HEADER ══════════════ -->
 <header>
   <a class="logo-wrap" href="index.html">
     <div class="logo-slot">
@@ -431,274 +675,624 @@ footer { background:var(--ink); border-top:1px solid var(--border); padding:5rem
   <a href="links.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>Links</a>
 </nav>
 
-<!-- ══════════════ PAGE HERO ══════════════ -->
-<div class="page-hero">
-  <div class="h-grid"></div>
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="page-eyebrow"><span class="pdot"></span>News &amp; Results</div>
-  <h1 class="page-title">
-    <span class="hol">TEAM</span>
-    <span class="bl">CHALLENGE.</span>
-  </h1>
-  <div class="article-meta">
-    <span class="meta-pill">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-      7th July
-    </span>
-    <span class="meta-pill blue">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-      Jubilee Juniors — Coventry
-    </span>
-    <span class="meta-pill gold">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-      U13 Gold · U17 Silver
-    </span>
-  </div>
-</div>
+  <!-- Hero — full viewport width, outside .container -->
+  <section class="hero">
+    <div class="h-grid"></div>
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
 
-<!-- ══════════════ MARQUEE ══════════════ -->
-<div class="mq-strip" aria-hidden="true">
-  <div class="mq-t">
-    <span class="mq-i"><strong>Team Challenge 2024</strong><span class="mq-d"></span></span>
-    <span class="mq-i">Jubilee Juniors<span class="mq-d"></span></span>
-    <span class="mq-i"><strong>U13 Gold Medal</strong><span class="mq-d"></span></span>
-    <span class="mq-i">U17 Silver Medal<span class="mq-d"></span></span>
-    <span class="mq-i"><strong>Rugby Youth</strong><span class="mq-d"></span></span>
-    <span class="mq-i">Boys &amp; Girls Singles, Doubles<span class="mq-d"></span></span>
-    <span class="mq-i"><strong>Team Challenge 2024</strong><span class="mq-d"></span></span>
-    <span class="mq-i">Jubilee Juniors<span class="mq-d"></span></span>
-    <span class="mq-i"><strong>U13 Gold Medal</strong><span class="mq-d"></span></span>
-    <span class="mq-i">U17 Silver Medal<span class="mq-d"></span></span>
-    <span class="mq-i"><strong>Rugby Youth</strong><span class="mq-d"></span></span>
-    <span class="mq-i">Boys &amp; Girls Singles, Doubles<span class="mq-d"></span></span>
-  </div>
-</div>
+    <div class="hero-content">
+      <div class="eyebrow"><span class="pdot"></span>Team Competition &middot; U13 &amp; U17</div>
+      <h1 class="ht">
+        <span class="wh">CLUB</span>
+        <span class="hol">CHALLENGE.</span>
+      </h1>
+      <p class="hdesc">A friendly team competition for <strong>Under-13 and Under-17</strong> players across Coventry and Warwickshire. Two rounds, ten matches per round &mdash; singles, doubles and mixed.</p>
 
-<!-- ══════════════ RESULTS BANNER ══════════════ -->
-<div class="results-banner">
-  <div class="res-item gold">
-    <div class="res-num">1st</div>
-    <div class="res-lbl">U13 Final Position</div>
-  </div>
-  <div class="res-div"></div>
-  <div class="res-item silver">
-    <div class="res-num">2nd</div>
-    <div class="res-lbl">U17 Final Position</div>
-  </div>
-  <div class="res-div"></div>
-  <div class="res-item">
-    <div class="res-num">10</div>
-    <div class="res-lbl">U13 Wins vs Jubilee</div>
-  </div>
-  <div class="res-div"></div>
-  <div class="res-item">
-    <div class="res-num">3</div>
-    <div class="res-lbl">Clubs Competed</div>
-  </div>
-</div>
-
-<!-- ══════════════ ARTICLE ══════════════ -->
-<div class="article-wrap">
-
-  <!-- Article body -->
-  <div class="article-body">
-
-    <p class="article-lead">The 7th of July saw Jubilee Juniors host another fantastic Team Challenge — and our players delivered.</p>
-
-    <p class="article-p">Both our <strong>U13</strong> and <strong>U17</strong> teams competed in a series of matches against Jubilee Juniors and Rugby Youth. Each match consisted of <strong>10 games</strong> — boys' singles, girls' singles, boys' doubles, girls' doubles, and mixed doubles. The competition was fierce, with some extraordinarily close games throughout the day.</p>
-
-    <div class="pull-quote">
-      <p>"The competition was fierce, with some very close games — but our players rose to every challenge."</p>
-      <cite>Coaching Team</cite>
-    </div>
-
-    <p class="article-p">This year, we were thrilled to have such talented teams representing the club. The standard of play across all three clubs was genuinely impressive, making every result feel hard-earned.</p>
-
-    <div class="a-divider"></div>
-
-    <div class="score-grid">
-      <div class="score-card">
-        <div class="score-card-label">Under 13s</div>
-        <div class="score-card-team">U13 Team</div>
-        <div class="score-card-badge badge-gold">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-          Gold
-        </div>
-        <div class="score-card-scores">
-          vs Jubilee Juniors — <span>10 wins</span><br>
-          vs Rugby Youth — <span>8 wins</span>
-        </div>
+      <div class="hero-clubs" aria-label="Participating clubs">
+        <div class="club-pill"><span class="club-pill-dot"></span>Jubilee Juniors &mdash; Coventry</div>
+        <div class="club-pill"><span class="club-pill-dot"></span>Racqueteers Junior BC &mdash; Coventry</div>
+        <div class="club-pill"><span class="club-pill-dot"></span>Rugby Youth BC &mdash; Rugby</div>
+        <div class="club-pill"><span class="club-pill-dot"></span>Alveston Junior BC &mdash; Stratford</div>
       </div>
-      <div class="score-card">
-        <div class="score-card-label">Under 17s</div>
-        <div class="score-card-team">U17 Team</div>
-        <div class="score-card-badge badge-silver">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-          Silver
-        </div>
-        <div class="score-card-scores">
-          vs Jubilee Juniors — <span>Draw</span><br>
-          vs Rugby Youth — <span>6 wins</span>
-        </div>
+
+      <div class="hcta">
+        <a href="#results" class="bp">
+          <span>View Results</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </a>
+        <a href="index.html" class="bs">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span>Back to Home</span>
+        </a>
       </div>
     </div>
 
-    <p class="article-p">Our <strong>U13 team absolutely dominated</strong>, claiming gold with an impressive 10 wins against Jubilee Juniors and 8 wins against Rugby Youth. A stunning performance from start to finish.</p>
-
-    <p class="article-p">While our U17 team didn't quite secure the top spot, they still put up a <strong>fantastic performance earning silver</strong> — 6 games won against Rugby Youth and a gutsy draw with Jubilee Juniors.</p>
-
-    <div class="a-divider"></div>
-
-    <p class="article-p">We extend our gratitude to our team managers and coaching team for their unwavering support throughout the day. Their guidance and encouragement played a crucial role in both teams' success.</p>
-
-    <p class="article-p">A massive well done to all our junior players who participated in the Team Challenge. Your dedication, skill, and sportsmanship were on full display — every single one of you made the club proud.</p>
-
-    <p class="article-p">The Team Challenge was a memorable event that showcased the talent and spirit of our young badminton juniors. We look forward to another exciting competition next year!</p>
-
-  </div>
-
-  <!-- Sidebar -->
-  <aside class="article-sidebar">
-
-    <div class="sidebar-card">
-      <div class="sidebar-card-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-        U13 Results
-      </div>
-      <div class="result-list">
-        <div class="result-row">
-          <span class="result-vs">vs Jubilee Juniors</span>
-          <span class="result-score">10 – 0</span>
-        </div>
-        <div class="result-row">
-          <span class="result-vs">vs Rugby Youth</span>
-          <span class="result-score">8 – 2</span>
-        </div>
-      </div>
+    <div class="scrl-cue">
+      <div class="scl"></div>
+      Scroll
     </div>
+  </section>
 
-    <div class="sidebar-card">
-      <div class="sidebar-card-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-        U17 Results
-      </div>
-      <div class="result-list">
-        <div class="result-row">
-          <span class="result-vs">vs Jubilee Juniors</span>
-          <span class="result-score">Draw</span>
-        </div>
-        <div class="result-row">
-          <span class="result-vs">vs Rugby Youth</span>
-          <span class="result-score">6 – 4</span>
+  <main class="container">
+    <!-- Yearly Results -->
+    <section id="results" style="padding-top:5rem;">
+      <div class="section-title">
+        <div>
+          <h2>Yearly Results</h2>
+          <p>Tap a year to expand results and read the match report. Host/Venue applies to both U13 and U17 for that year.</p>
         </div>
       </div>
-    </div>
 
-    <div class="sidebar-card">
-      <div class="sidebar-card-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        Event Details
-      </div>
-      <div class="fact-list">
-        <div class="fact-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-          7th July 2024
-        </div>
-        <div class="fact-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-          Hosted by Jubilee Juniors
-        </div>
-        <div class="fact-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-          3 clubs competing
-        </div>
-        <div class="fact-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-          10 games per match
-        </div>
-        <div class="fact-row">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(80,130,255,.7)"><path d="M11.99 2L2 7l10 5 10-5-10.01-5zM2 17l10 5 10-5-10-5-10 5zm0-5l10 5 10-5-10-5-10 5z"/></svg>
-          Singles, Doubles &amp; Mixed
-        </div>
-      </div>
-    </div>
+      <div class="year-grid">
 
-    <div class="sidebar-card">
-      <div class="sidebar-card-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-        Clubs
-      </div>
-      <div class="participant-list">
-        <div class="participant-row"><span class="participant-dot"></span>Racqueteers Junior</div>
-        <div class="participant-row"><span class="participant-dot"></span>Jubilee Juniors</div>
-        <div class="participant-row"><span class="participant-dot"></span>Rugby Youth</div>
-      </div>
-    </div>
+        <!-- ══════════════════════════════════════
+             2011
+        ══════════════════════════════════════ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2011</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2011.html" title="Open 2011 photo highlights">
+              <span class="dot" aria-hidden="true"></span>Photo highlights
+            </a>
+            <span class="year-badge">View</span>
+          </summary>
 
-  </aside>
-</div>
+          <div class="year-body">
+            <!-- Standard venue/date row -->
+            <div class="year-row">
+              <div class="year-row-head">
+                <span class="label">Host / Venue</span>
+                <span class="label label-right">Date</span>
+              </div>
+              <div class="year-row-body">
+                <span class="value">Racqueteers Junior Badminton Club - Coventry</span>
+                <span class="value value-right">—</span>
+              </div>
+            </div>
 
-<!-- ══════════════ PHOTOS ══════════════ -->
-<div class="photos-section">
+            <!-- Standard result cards -->
+            <div class="year-results-grid">
+              <div class="year-result-card">
+                <div class="result-head">
+                  <h4>U13</h4>
+                  <a class="btn btn-results" href="results/2011-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a>
+                </div>
+                <p><strong>Winners:</strong> Rugby Youth Badminton Squad</p>
+                <p><strong>Runner-up:</strong> —</p>
+              </div>
+              <div class="year-result-card">
+                <div class="result-head">
+                  <h4>U17</h4>
+                  <a class="btn btn-results" href="results/2011-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a>
+                </div>
+                <p><strong>Winners:</strong> —</p>
+                <p><strong>Runner-up:</strong> —</p>
+              </div>
+            </div>
 
-  <!-- PHOTO SLOT 1: set src="U13.jpg" -->
-  <div class="photo-card">
-    <img src="U13.jpg" alt="U13 Team"
-         onerror="this.style.display='none';"
-         onload="this.nextElementSibling.style.display='none';">
-    <div class="photo-ph">
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-        <circle cx="20" cy="18" r="8" stroke="rgba(80,130,255,.6)" stroke-width="1.5"/>
-        <path d="M6 42 Q6 32 20 32 Q34 32 34 42" stroke="rgba(80,130,255,.5)" stroke-width="1.5" fill="none"/>
-        <circle cx="40" cy="15" r="9" stroke="rgba(80,130,255,.7)" stroke-width="1.5"/>
-        <path d="M26 42 Q26 30 40 30 Q54 30 54 42" stroke="rgba(80,130,255,.6)" stroke-width="1.5" fill="none"/>
-        <circle cx="60" cy="18" r="8" stroke="rgba(80,130,255,.6)" stroke-width="1.5"/>
-        <path d="M46 42 Q46 32 60 32 Q74 32 74 42" stroke="rgba(80,130,255,.5)" stroke-width="1.5" fill="none"/>
-      </svg>
-      <p>U13.jpg — add your photo here</p>
-    </div>
-    <div class="photo-card-ov">
-      <div class="photo-card-cap">
-        <div class="photo-cap-lbl">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-          Gold Medallists
-        </div>
-        <div class="photo-cap-title">U13 Team</div>
-      </div>
-    </div>
-  </div>
+            <!-- ── NEWS ARTICLE EMBED ── -->
+            <div class="nc-wrap">
+              <div class="nc-placeholder">No match report available for 2011 yet.</div>
+            </div>
+          </div>
+        </details>
 
-  <!-- PHOTO SLOT 2: set src="U17.jpg" -->
-  <div class="photo-card">
-    <img src="U17.jpg" alt="U17 Team"
-         onerror="this.style.display='none';"
-         onload="this.nextElementSibling.style.display='none';">
-    <div class="photo-ph">
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-        <circle cx="20" cy="18" r="8" stroke="rgba(80,130,255,.6)" stroke-width="1.5"/>
-        <path d="M6 42 Q6 32 20 32 Q34 32 34 42" stroke="rgba(80,130,255,.5)" stroke-width="1.5" fill="none"/>
-        <circle cx="40" cy="15" r="9" stroke="rgba(80,130,255,.7)" stroke-width="1.5"/>
-        <path d="M26 42 Q26 30 40 30 Q54 30 54 42" stroke="rgba(80,130,255,.6)" stroke-width="1.5" fill="none"/>
-        <circle cx="60" cy="18" r="8" stroke="rgba(80,130,255,.6)" stroke-width="1.5"/>
-        <path d="M46 42 Q46 32 60 32 Q74 32 74 42" stroke="rgba(80,130,255,.5)" stroke-width="1.5" fill="none"/>
-      </svg>
-      <p>U17.jpg — add your photo here</p>
-    </div>
-    <div class="photo-card-ov">
-      <div class="photo-card-cap">
-        <div class="photo-cap-lbl">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
-          Silver Medallists
-        </div>
-        <div class="photo-cap-title">U17 Team</div>
-      </div>
-    </div>
-  </div>
+        <!-- ══════════════════════════════════════
+             2012
+        ══════════════════════════════════════ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2012</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2012.html" title="Open 2012 photo highlights">
+              <span class="dot" aria-hidden="true"></span>Photo highlights
+            </a>
+            <span class="year-badge">View</span>
+          </summary>
 
-</div>
+          <div class="year-body">
+            <div class="year-row">
+              <div class="year-row-head">
+                <span class="label">Host / Venue</span>
+                <span class="label label-right">Date</span>
+              </div>
+              <div class="year-row-body">
+                <span class="value">Rugby Youth Badminton Squad — Rugby College Sports Centre</span>
+                <span class="value value-right">29-APR-2012</span>
+              </div>
+            </div>
 
-<!-- ══════════════ FOOTER ══════════════ -->
+            <div class="year-results-grid">
+              <div class="year-result-card">
+                <div class="result-head">
+                  <h4>U13</h4>
+                  <a class="btn btn-results" href="results/2012-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a>
+                </div>
+                <p><strong>Winners:</strong> Alveston Junior Badminton Club</p>
+                <p><strong>Runner-up:</strong> Racqueteers Junior Badminton Club</p>
+              </div>
+              <div class="year-result-card">
+                <div class="result-head">
+                  <h4>U17</h4>
+                  <a class="btn btn-results" href="results/2012-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a>
+                </div>
+                <p><strong>Winners:</strong> Rugby Youth Badminton Squad</p>
+                <p><strong>Runner-up:</strong> Alveston Junior Badminton Club</p>
+              </div>
+            </div>
+
+            <div class="nc-wrap">
+              <div class="nc-placeholder">No match report available for 2012 yet.</div>
+            </div>
+          </div>
+        </details>
+
+        <!-- 2013–2024: years with no data — use a compact template -->
+        <!-- ══ 2013 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2013</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2013.html" title="Open 2013 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2013-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2013-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2013 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2014 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2014</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2014.html" title="Open 2014 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2014-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2014-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2014 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2015 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2015</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2015.html" title="Open 2015 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2015-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2015-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2015 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2016 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2016</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2016.html" title="Open 2016 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2016-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2016-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2016 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2017 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2017</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2017.html" title="Open 2017 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2017-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2017-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2017 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2018 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2018</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2018.html" title="Open 2018 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2018-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2018-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2018 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2019 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2019</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2019.html" title="Open 2019 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2019-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2019-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2019 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2022 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2022</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2022.html" title="Open 2022 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2022-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2022-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2022 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2023 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2023</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2023.html" title="Open 2023 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2023-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2023-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2023 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══ 2024 ══ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2024</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2024.html" title="Open 2024 photo highlights"><span class="dot" aria-hidden="true"></span>Photo highlights</a>
+            <span class="year-badge">View</span>
+          </summary>
+          <div class="year-body">
+            <div class="year-row"><div class="year-row-head"><span class="label">Host / Venue</span><span class="label label-right">Date</span></div><div class="year-row-body"><span class="value">—</span><span class="value value-right">—</span></div></div>
+            <div class="year-results-grid">
+              <div class="year-result-card"><div class="result-head"><h4>U13</h4><a class="btn btn-results" href="results/2024-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+              <div class="year-result-card"><div class="result-head"><h4>U17</h4><a class="btn btn-results" href="results/2024-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a></div><p><strong>Winners:</strong> —</p><p><strong>Runner-up:</strong> —</p></div>
+            </div>
+            <div class="nc-wrap"><div class="nc-placeholder">No match report available for 2024 yet.</div></div>
+          </div>
+        </details>
+
+        <!-- ══════════════════════════════════════
+             2025 — FULL NEWS ARTICLE EMBEDDED
+        ══════════════════════════════════════ -->
+        <details class="year-card">
+          <summary class="year-summary">
+            <span class="year-title">2025</span>
+            <a class="btn btn-photo year-photo-btn" href="gallery-2025.html" title="Open 2025 photo highlights">
+              <span class="dot" aria-hidden="true"></span>Photo highlights
+            </a>
+            <span class="year-badge">Latest</span>
+          </summary>
+
+          <div class="year-body">
+            <div class="year-row">
+              <div class="year-row-head">
+                <span class="label">Host / Venue</span>
+                <span class="label label-right">Date</span>
+              </div>
+              <div class="year-row-body">
+                <span class="value">Rugby Youth Badminton Squad — Rugby College Sports Centre</span>
+                <span class="value value-right">—</span>
+              </div>
+            </div>
+
+            <div class="year-results-grid">
+              <div class="year-result-card">
+                <div class="result-head">
+                  <h4>U13</h4>
+                  <a class="btn btn-results" href="results/2025-u13.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a>
+                </div>
+                <p><strong>Winners:</strong> Rugby Youth Badminton Squad</p>
+                <p><strong>Runner-up:</strong> Jubilee Juniors</p>
+              </div>
+              <div class="year-result-card">
+                <div class="result-head">
+                  <h4>U17</h4>
+                  <a class="btn btn-results" href="results/2025-u17.pdf" target="_blank" rel="noopener"><svg class="pdf-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 13h2a2 2 0 0 1 0 4H8v-4Zm6 0h1.5a1.5 1.5 0 0 1 0 3H14v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></a>
+                </div>
+                <p><strong>Winners:</strong> Racqueteers Junior Badminton Club</p>
+                <p><strong>Runner-up:</strong> Jubilee Juniors</p>
+              </div>
+            </div>
+
+            <!-- ══ FULL NEWS ARTICLE — 2025 ══ -->
+            <div class="nc-wrap">
+
+              <!-- Eyebrow -->
+              <div class="nc-eyebrow"><span class="nc-pdot"></span>Match Report · 2025</div>
+
+              <!-- Meta pills -->
+              <div class="nc-meta">
+                <span class="nc-pill">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                  7th July
+                </span>
+                <span class="nc-pill blue">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  Rugby College Sports Centre
+                </span>
+                <span class="nc-pill gold">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                  U17 Gold · U13 Silver
+                </span>
+              </div>
+
+              <!-- Marquee -->
+              <div class="nc-mq" aria-hidden="true">
+                <div class="nc-mq-t">
+                  <span class="nc-mq-i"><strong>Club Challenge 2025</strong><span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i">Rugby College Sports Centre<span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i"><strong>U13 Silver · U17 Gold</strong><span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i">Boys &amp; Girls Singles, Doubles<span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i"><strong>Racqueteers Junior BC</strong><span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i">4 Clubs Competing<span class="nc-mq-d"></span></span>
+                  <!-- duplicate for seamless loop -->
+                  <span class="nc-mq-i"><strong>Club Challenge 2025</strong><span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i">Rugby College Sports Centre<span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i"><strong>U13 Silver · U17 Gold</strong><span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i">Boys &amp; Girls Singles, Doubles<span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i"><strong>Racqueteers Junior BC</strong><span class="nc-mq-d"></span></span>
+                  <span class="nc-mq-i">4 Clubs Competing<span class="nc-mq-d"></span></span>
+                </div>
+              </div>
+
+              <!-- Results banner -->
+              <div class="nc-banner">
+                <div class="nc-res-item gold">
+                  <div class="nc-res-num">1st</div>
+                  <div class="nc-res-lbl">U17 Final Position</div>
+                </div>
+                <div class="nc-res-div"></div>
+                <div class="nc-res-item silver">
+                  <div class="nc-res-num">2nd</div>
+                  <div class="nc-res-lbl">U13 Final Position</div>
+                </div>
+                <div class="nc-res-div"></div>
+                <div class="nc-res-item">
+                  <div class="nc-res-num">10</div>
+                  <div class="nc-res-lbl">Matches Played</div>
+                </div>
+                <div class="nc-res-div"></div>
+                <div class="nc-res-item">
+                  <div class="nc-res-num">4</div>
+                  <div class="nc-res-lbl">Clubs Competed</div>
+                </div>
+              </div>
+
+              <!-- Article + sidebar -->
+              <div class="nc-article">
+
+                <!-- Body -->
+                <div class="nc-body">
+                  <p class="nc-lead">The 2025 Club Challenge saw Racqueteers travel to Rugby College Sports Centre — and both our teams gave everything on court.</p>
+
+                  <p class="nc-p">Both our <strong>U13</strong> and <strong>U17</strong> teams competed in a full series of matches against Jubilee Juniors and Rugby Youth Badminton Squad. Each match consisted of <strong>10 games</strong> — boys' singles, girls' singles, boys' doubles, girls' doubles, and mixed doubles. The standard across all four clubs was genuinely impressive, making every result feel hard-earned from the first shuttle to the last.</p>
+
+                  <div class="nc-quote">
+                    <p>"Both squads showed enormous heart — every game was contested to the very last point."</p>
+                    <cite>Racqueteers Coaching Team</cite>
+                  </div>
+
+                  <p class="nc-p">Our <strong>U17 side took gold</strong>, topping the standings with a commanding performance across all their match-ups — a result that reflects months of hard training and real improvement in team coordination. The U13s secured silver, running Rugby Youth very close and finishing ahead of Jubilee Juniors in a tightly contested day of play.</p>
+
+                  <div class="nc-divider"></div>
+
+                  <!-- Score cards -->
+                  <div class="nc-score-grid">
+                    <div class="nc-score-card">
+                      <div class="nc-sc-label">Under 17s</div>
+                      <div class="nc-sc-team">U17 Team</div>
+                      <div class="nc-sc-badge nc-badge-gold">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                        Gold
+                      </div>
+                      <div class="nc-sc-scores">
+                        vs Jubilee Juniors — <span>Winners</span><br>
+                        vs Rugby Youth — <span>Winners</span>
+                      </div>
+                    </div>
+                    <div class="nc-score-card">
+                      <div class="nc-sc-label">Under 13s</div>
+                      <div class="nc-sc-team">U13 Team</div>
+                      <div class="nc-sc-badge nc-badge-silver">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                        Silver
+                      </div>
+                      <div class="nc-sc-scores">
+                        vs Jubilee Juniors — <span>Winners</span><br>
+                        vs Rugby Youth — <span>Runners-up</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="nc-p">A massive well done to every player who stepped on court for Racqueteers. Your dedication, skill, and sportsmanship were on full display — everyone made the club proud. Special thanks to the coaching team and team managers whose preparation and encouragement made the day possible.</p>
+
+                  <p class="nc-p">We look forward to going one better across both age groups in 2026 — see you on court.</p>
+
+                  <!-- Photo cards -->
+                  <div class="nc-photos">
+                    <div class="nc-photo">
+                      <img src="U13.jpg" alt="U13 Team 2025"
+                           onerror="this.style.display='none';"
+                           onload="this.nextElementSibling.style.display='none';">
+                      <div class="nc-photo-ph">
+                        <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+                          <circle cx="20" cy="18" r="8" stroke="rgba(80,130,255,.55)" stroke-width="1.5"/>
+                          <path d="M6 42 Q6 32 20 32 Q34 32 34 42" stroke="rgba(80,130,255,.45)" stroke-width="1.5" fill="none"/>
+                          <circle cx="40" cy="15" r="9" stroke="rgba(80,130,255,.65)" stroke-width="1.5"/>
+                          <path d="M26 42 Q26 30 40 30 Q54 30 54 42" stroke="rgba(80,130,255,.55)" stroke-width="1.5" fill="none"/>
+                          <circle cx="60" cy="18" r="8" stroke="rgba(80,130,255,.55)" stroke-width="1.5"/>
+                          <path d="M46 42 Q46 32 60 32 Q74 32 74 42" stroke="rgba(80,130,255,.45)" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        <p>U13.jpg — add your photo here</p>
+                      </div>
+                      <div class="nc-photo-ov">
+                        <div class="nc-photo-cap">
+                          <div class="nc-cap-lbl">
+                            <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                            Silver Medallists
+                          </div>
+                          <div class="nc-cap-title">U13 Team</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="nc-photo">
+                      <img src="U17.jpg" alt="U17 Team 2025"
+                           onerror="this.style.display='none';"
+                           onload="this.nextElementSibling.style.display='none';">
+                      <div class="nc-photo-ph">
+                        <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+                          <circle cx="20" cy="18" r="8" stroke="rgba(80,130,255,.55)" stroke-width="1.5"/>
+                          <path d="M6 42 Q6 32 20 32 Q34 32 34 42" stroke="rgba(80,130,255,.45)" stroke-width="1.5" fill="none"/>
+                          <circle cx="40" cy="15" r="9" stroke="rgba(80,130,255,.65)" stroke-width="1.5"/>
+                          <path d="M26 42 Q26 30 40 30 Q54 30 54 42" stroke="rgba(80,130,255,.55)" stroke-width="1.5" fill="none"/>
+                          <circle cx="60" cy="18" r="8" stroke="rgba(80,130,255,.55)" stroke-width="1.5"/>
+                          <path d="M46 42 Q46 32 60 32 Q74 32 74 42" stroke="rgba(80,130,255,.45)" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        <p>U17.jpg — add your photo here</p>
+                      </div>
+                      <div class="nc-photo-ov">
+                        <div class="nc-photo-cap">
+                          <div class="nc-cap-lbl">
+                            <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                            Gold Medallists
+                          </div>
+                          <div class="nc-cap-title">U17 Team</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /nc-body -->
+
+                <!-- Sidebar -->
+                <aside class="nc-sidebar">
+
+                  <div class="nc-scard">
+                    <div class="nc-scard-title">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                      U13 Results
+                    </div>
+                    <div class="nc-rlist">
+                      <div class="nc-rrow"><span class="nc-rvs">vs Jubilee Juniors</span><span class="nc-rscore">W</span></div>
+                      <div class="nc-rrow"><span class="nc-rvs">vs Rugby Youth</span><span class="nc-rscore">L</span></div>
+                      <div class="nc-rrow"><span class="nc-rvs">vs Alveston</span><span class="nc-rscore">—</span></div>
+                    </div>
+                  </div>
+
+                  <div class="nc-scard">
+                    <div class="nc-scard-title">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94C8.02 14.24 9.37 15.38 11 15.73V19H7v2h10v-2h-4v-3.27c1.63-.35 2.98-1.49 3.61-2.79C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zm-2 3c0 1.65-1.35 3-3 3H10c-1.65 0-3-1.35-3-3V5h10v3z"/></svg>
+                      U17 Results
+                    </div>
+                    <div class="nc-rlist">
+                      <div class="nc-rrow"><span class="nc-rvs">vs Jubilee Juniors</span><span class="nc-rscore">W</span></div>
+                      <div class="nc-rrow"><span class="nc-rvs">vs Rugby Youth</span><span class="nc-rscore">W</span></div>
+                      <div class="nc-rrow"><span class="nc-rvs">vs Alveston</span><span class="nc-rscore">—</span></div>
+                    </div>
+                  </div>
+
+                  <div class="nc-scard">
+                    <div class="nc-scard-title">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                      Event Details
+                    </div>
+                    <div class="nc-flist">
+                      <div class="nc-frow">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(40,90,240,.6)"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                        7th July 2025
+                      </div>
+                      <div class="nc-frow">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(40,90,240,.6)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        Rugby College Sports Centre
+                      </div>
+                      <div class="nc-frow">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(40,90,240,.6)"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        4 clubs competing
+                      </div>
+                      <div class="nc-frow">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(40,90,240,.6)"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        10 games per match
+                      </div>
+                      <div class="nc-frow">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(40,90,240,.6)"><path d="M11.99 2L2 7l10 5 10-5-10.01-5zM2 17l10 5 10-5-10-5-10 5zm0-5l10 5 10-5-10-5-10 5z"/></svg>
+                        Singles, Doubles &amp; Mixed
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="nc-scard">
+                    <div class="nc-scard-title">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                      Clubs
+                    </div>
+                    <div class="nc-plist">
+                      <div class="nc-prow"><span class="nc-pdot2"></span>Racqueteers Junior BC</div>
+                      <div class="nc-prow"><span class="nc-pdot2"></span>Jubilee Juniors</div>
+                      <div class="nc-prow"><span class="nc-pdot2"></span>Rugby Youth BC</div>
+                      <div class="nc-prow"><span class="nc-pdot2"></span>Alveston Junior BC</div>
+                    </div>
+                  </div>
+
+                </aside>
+              </div><!-- /nc-article -->
+
+            </div><!-- /nc-wrap -->
+
+          </div>
+        </details>
+        <!-- end 2025 -->
+
+      </div><!-- /year-grid -->
+    </section>
+  </main>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
 <footer>
   <div class="foot-grid">
     <div>
@@ -743,37 +1337,26 @@ footer { background:var(--ink); border-top:1px solid var(--border); padding:5rem
 </footer>
 
 <script>
-/* ── CURSOR ── */
-const cur=document.getElementById('cur'),curR=document.getElementById('curR');
-let mx=0,my=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function loop(){curR.style.left=mx+'px';curR.style.top=my+'px';requestAnimationFrame(loop);})();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';curR.style.width='46px';curR.style.height='46px';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='30px';curR.style.height='30px';});
-});
 
-/* ── THEME ── */
-document.getElementById('themeBtn').addEventListener('click',()=>{
-  document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';
-});
 
-/* ── HAMBURGER ── */
-document.getElementById('hamb').addEventListener('click',()=>document.getElementById('mobNav').classList.toggle('open'));
+    /* ── THEME ── */
+    document.getElementById('themeBtn').addEventListener('click',()=>{
+      document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';
+    });
 
-/* ── SCROLL PROGRESS ── */
-const prog=document.getElementById('prog');
-window.addEventListener('scroll',()=>{
-  prog.style.width=((scrollY/(document.body.scrollHeight-innerHeight))*100)+'%';
-},{passive:true});
+    /* ── HAMBURGER ── */
+    document.getElementById('hamb').addEventListener('click',()=>document.getElementById('mobNav').classList.toggle('open'));
 
-/* ── SCROLL REVEAL ── */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('in-view');});
-},{threshold:0.12});
-document.querySelectorAll(
-  '.article-lead,.article-p,.pull-quote,.score-card,.sidebar-card,.photo-card'
-).forEach(el=>obs.observe(el));
+    /* ── SCROLL PROGRESS ── */
+    const prog=document.getElementById('prog');
+    window.addEventListener('scroll',()=>{prog.style.width=((scrollY/(document.body.scrollHeight-innerHeight))*100)+'%';},{passive:true});
+
+    /* ── SCROLL REVEAL ── */
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('in-view');});
+    },{threshold:0.1});
+    document.querySelectorAll('.link-card,.club-card,.fade-up').forEach(el=>obs.observe(el));
 </script>
+
 </body>
 </html>
